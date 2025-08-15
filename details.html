@@ -8,8 +8,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #f8fafc; 
-            color: #1e293b;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); 
+            min-height: 100vh;
+            color: white;
         }
 
         .header {
@@ -52,11 +53,12 @@
         }
 
         .timeline-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
+            border: 1px solid rgba(196, 216, 45, 0.3);
         }
 
         .timeline-header {
@@ -74,10 +76,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 30px;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
         }
 
         .timeline-table th {
@@ -139,8 +142,13 @@
     <div class="header">
         <div class="container">
             <a href="index.html" class="back-btn">← Back to Location</a>
-            <h1>Generator 11293651 - Equipment Timeline</h1>
-            <p>Equipment ON/OFF timeline (All times in CST/CDT)</p>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                <img src="taulab.png" alt="TauLab" style="height: 70px; width: auto; filter: brightness(1.1);">
+                <div>
+                    <h1>TauLab Equipment Timeline</h1>
+                    <p>Generator 11293651 - Advanced Analytics Dashboard (CST/CDT)</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -162,7 +170,7 @@
                 </div>
             </div>
 
-            <div style="background: white; border-radius: 8px; padding: 20px;">
+            <div style="background: rgba(255, 255, 255, 0.95); border-radius: 8px; padding: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); border: 1px solid rgba(196, 216, 45, 0.3);">
                 <div id="timelineChart">
                     <!-- Timeline will be generated here -->
                 </div>
@@ -451,6 +459,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-15 11:17:57 -->
+<!-- Updated: 2025-08-15 11:27:12 -->
 </body>
 </html>

@@ -10,10 +10,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #f0f2f5; 
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color: white;
         }
 
         .header {
@@ -35,6 +36,13 @@
             display: flex;
             align-items: center;
             gap: 20px;
+        }
+
+        .company-logo {
+            height: 80px;
+            width: auto;
+            margin-right: 15px;
+            filter: brightness(1.1);
         }
 
         .equipment-details h1 {
@@ -76,11 +84,12 @@
         }
 
         .map-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             position: relative;
+            border: 1px solid rgba(196, 216, 45, 0.3);
         }
 
         .map-container {
@@ -138,10 +147,11 @@
         }
 
         .info-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
         }
 
         .info-card h3 {
@@ -221,13 +231,16 @@
         }
 
         .btn-secondary {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, #c4d82d 0%, #d4e834 100%);
+            color: #1e3a5f;
+            border: none;
+            font-weight: 600;
         }
 
         .btn-secondary:hover {
-            background: #e2e8f0;
+            background: linear-gradient(135deg, #d4e834 0%, #e8f040 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(196, 216, 45, 0.4);
         }
 
         .timestamp {
@@ -335,9 +348,10 @@
     <div class="header">
         <div class="header-content">
             <div class="equipment-info">
+                <img src="taulab.png" alt="TauLab" class="company-logo">
                 <div class="equipment-details">
-                    <h1>Generator 11293651</h1>
-                    <p>United Rentals Equipment • Live Tracking</p>
+                    <h1>TauLab Equipment Monitor</h1>
+                    <p>Generator 11293651 • Advanced Tracking & Analytics</p>
                 </div>
             </div>
             <div class="hours-display">
@@ -537,6 +551,6 @@
         `;
         document.head.appendChild(style);
     </script>
-<!-- Updated: 2025-08-15 11:17:57 -->
+<!-- Updated: 2025-08-15 11:27:12 -->
 </body>
 </html>

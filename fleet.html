@@ -10,8 +10,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: #f8fafc; 
-            color: #1e293b;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); 
+            min-height: 100vh;
+            color: white;
             line-height: 1.6;
         }
 
@@ -21,6 +22,24 @@
             padding: 30px 20px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .company-logo {
+            height: 90px;
+            width: auto;
+            filter: brightness(1.1);
+        }
+
+        .header-text {
+            text-align: center;
         }
 
         .header h1 {
@@ -35,11 +54,12 @@
         }
 
         .stats-bar {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             margin: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
@@ -84,13 +104,13 @@
         }
 
         .equipment-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             cursor: pointer;
-            border: 3px solid transparent;
+            border: 2px solid rgba(196, 216, 45, 0.3);
         }
 
         .equipment-card:hover {
@@ -99,13 +119,15 @@
         }
 
         .equipment-card.clickable {
-            border-color: #3b82f6;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            border-color: #c4d82d;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(196, 216, 45, 0.1) 100%);
+            box-shadow: 0 4px 25px rgba(196, 216, 45, 0.2);
         }
 
         .equipment-card.clickable:hover {
-            border-color: #2563eb;
+            border-color: #d4e834;
             transform: translateY(-4px);
+            box-shadow: 0 6px 30px rgba(196, 216, 45, 0.3);
         }
 
         .card-header {
@@ -262,9 +284,11 @@
             text-align: center;
             margin-top: 30px;
             padding: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 8px;
             color: #64748b;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
         }
 
         @keyframes pulse {
@@ -279,8 +303,13 @@
 </head>
 <body>
     <div class="header">
-        <h1>Fleet Equipment Overview</h1>
-        <p>Monitor equipment status, reduce losses, and maximize profit with effortless tracking</p>
+        <div class="header-content">
+            <img src="taulab.png" alt="TauLab" class="company-logo">
+            <div class="header-text">
+                <h1>TauLab Equipment Command Center</h1>
+                <p>Monitor equipment status, reduce losses, and maximize profit with effortless tracking</p>
+            </div>
+        </div>
     </div>
 
     <div class="stats-bar">
@@ -293,11 +322,11 @@
             <div class="stat-label">Active Now</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value stat-caution">2</div>
+            <div class="stat-value stat-caution">3</div>
             <div class="stat-label">Maintenance Required (50-90%)</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value stat-critical">0</div>
+            <div class="stat-value stat-critical">2</div>
             <div class="stat-label">Critical (90%+)</div>
         </div>
     </div>
@@ -308,79 +337,23 @@
                 <div class="card-header">
                     <div class="equipment-id">Generator 11293651</div>
                     <div class="equipment-type">United Rentals</div>
-                    <div class="status-badge" style="background-color: #22c55e;">
-                        Good
+                    <div class="status-badge" style="background-color: #dc2626;">
+                        Critical
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;">
-                            39/100h
+                        <span class="hours-text" style="color: #dc2626;">
+                            93/100h
                         </span>
                         <span class="hours-percentage">
-                            39%
+                            93%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 39.0%; background-color: #22c55e;"></div>
-                    </div>
-
-                    <div class="equipment-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value">Idle</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Brand</div>
-                            <div class="detail-value">United Rentals</div>
-                        </div>
-                        
-                    <div class="detail-item">
-                        <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.13764</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52395</div>
-                    </div>
-                
-                    </div>
-
-                    <div class="last-seen">
-                        Last seen: 2025-08-15 11:00
-                    </div>
-                </div>
-
-                <div class="action-area">
-                    <button class="view-details-btn" onclick="window.open('index.html', '_blank')" >
-                        VIEW LOCATION & TIMELINE
-                    </button>
-                </div>
-            </div>
-            
-            <div class="equipment-card ">
-                <div class="card-header">
-                    <div class="equipment-id">Compressor 11294782</div>
-                    <div class="equipment-type">United Rentals</div>
-                    <div class="status-badge" style="background-color: #22c55e;">
-                        Good
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;">
-                            17/100h
-                        </span>
-                        <span class="hours-percentage">
-                            17%
-                        </span>
-                    </div>
-
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 17.0%; background-color: #22c55e;"></div>
+                        <div class="progress-fill" style="width: 93.0%; background-color: #dc2626;"></div>
                     </div>
 
                     <div class="equipment-details">
@@ -395,17 +368,73 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.13299</div>
+                        <div class="detail-value coordinates">52.13788</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52107</div>
+                        <div class="detail-value coordinates">-104.52154</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 10:50
+                        Last seen: 2025-08-15 11:13
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="window.open('index.html', '_blank')" >
+                        VIEW LOCATION & TIMELINE
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Compressor 11294782</div>
+                    <div class="equipment-type">United Rentals</div>
+                    <div class="status-badge" style="background-color: #f59e0b;">
+                        Maintenance Required
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #f59e0b;">
+                            73/100h
+                        </span>
+                        <span class="hours-percentage">
+                            73%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 73.0%; background-color: #f59e0b;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Idle</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">United Rentals</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.13080</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.51335</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-15 10:58
                     </div>
                 </div>
 
@@ -428,15 +457,15 @@
                 <div class="card-body">
                     <div class="hours-display">
                         <span class="hours-text" style="color: #6b7280;">
-                            23/100h
+                            14/100h
                         </span>
                         <span class="hours-percentage">
-                            23%
+                            14%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 23.0%; background-color: #6b7280;"></div>
+                        <div class="progress-fill" style="width: 14.000000000000002%; background-color: #6b7280;"></div>
                     </div>
 
                     <div class="equipment-details">
@@ -461,7 +490,7 @@
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-14 16:17
+                        Last seen: 2025-08-14 03:27
                     </div>
                 </div>
 
@@ -476,29 +505,29 @@
                 <div class="card-header">
                     <div class="equipment-id">Excavator 11296124</div>
                     <div class="equipment-type">Caterpillar</div>
-                    <div class="status-badge" style="background-color: #f59e0b;">
-                        Maintenance Required
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #f59e0b;">
-                            66/100h
+                        <span class="hours-text" style="color: #22c55e;">
+                            28/100h
                         </span>
                         <span class="hours-percentage">
-                            66%
+                            28%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 66.0%; background-color: #f59e0b;"></div>
+                        <div class="progress-fill" style="width: 28.000000000000004%; background-color: #22c55e;"></div>
                     </div>
 
                     <div class="equipment-details">
                         <div class="detail-item">
                             <div class="detail-label">Status</div>
-                            <div class="detail-value">Active</div>
+                            <div class="detail-value">Idle</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Brand</div>
@@ -507,17 +536,17 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.12912</div>
+                        <div class="detail-value coordinates">52.11972</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.50955</div>
+                        <div class="detail-value coordinates">-104.52405</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 10:49
+                        Last seen: 2025-08-15 11:15
                     </div>
                 </div>
 
@@ -540,15 +569,15 @@
                 <div class="card-body">
                     <div class="hours-display">
                         <span class="hours-text" style="color: #22c55e;">
-                            36/100h
+                            46/100h
                         </span>
                         <span class="hours-percentage">
-                            36%
+                            46%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 36.0%; background-color: #22c55e;"></div>
+                        <div class="progress-fill" style="width: 46.0%; background-color: #22c55e;"></div>
                     </div>
 
                     <div class="equipment-details">
@@ -563,17 +592,17 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.13292</div>
+                        <div class="detail-value coordinates">52.12206</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52729</div>
+                        <div class="detail-value coordinates">-104.51956</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 10:59
+                        Last seen: 2025-08-15 11:08
                     </div>
                 </div>
 
@@ -588,23 +617,23 @@
                 <div class="card-header">
                     <div class="equipment-id">Forklift 11298567</div>
                     <div class="equipment-type">Toyota</div>
-                    <div class="status-badge" style="background-color: #22c55e;">
-                        Good
+                    <div class="status-badge" style="background-color: #dc2626;">
+                        Critical
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;">
-                            48/100h
+                        <span class="hours-text" style="color: #dc2626;">
+                            96/100h
                         </span>
                         <span class="hours-percentage">
-                            48%
+                            96%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 48.0%; background-color: #22c55e;"></div>
+                        <div class="progress-fill" style="width: 96.0%; background-color: #dc2626;"></div>
                     </div>
 
                     <div class="equipment-details">
@@ -619,17 +648,17 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.13561</div>
+                        <div class="detail-value coordinates">52.12308</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52497</div>
+                        <div class="detail-value coordinates">-104.52783</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 10:48
+                        Last seen: 2025-08-15 11:15
                     </div>
                 </div>
 
@@ -652,15 +681,15 @@
                 <div class="card-body">
                     <div class="hours-display">
                         <span class="hours-text" style="color: #6b7280;">
-                            8/100h
+                            41/100h
                         </span>
                         <span class="hours-percentage">
-                            8%
+                            41%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 8.0%; background-color: #6b7280;"></div>
+                        <div class="progress-fill" style="width: 41.0%; background-color: #6b7280;"></div>
                     </div>
 
                     <div class="equipment-details">
@@ -685,7 +714,7 @@
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-14 17:17
+                        Last seen: 2025-08-15 00:27
                     </div>
                 </div>
 
@@ -700,29 +729,29 @@
                 <div class="card-header">
                     <div class="equipment-id">Bulldozer 11300129</div>
                     <div class="equipment-type">Caterpillar</div>
-                    <div class="status-badge" style="background-color: #f59e0b;">
-                        Maintenance Required
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #f59e0b;">
-                            70/100h
+                        <span class="hours-text" style="color: #22c55e;">
+                            25/100h
                         </span>
                         <span class="hours-percentage">
-                            70%
+                            25%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 70.0%; background-color: #f59e0b;"></div>
+                        <div class="progress-fill" style="width: 25.0%; background-color: #22c55e;"></div>
                     </div>
 
                     <div class="equipment-details">
                         <div class="detail-item">
                             <div class="detail-label">Status</div>
-                            <div class="detail-value">Idle</div>
+                            <div class="detail-value">Active</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Brand</div>
@@ -731,17 +760,17 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.13467</div>
+                        <div class="detail-value coordinates">52.13561</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52548</div>
+                        <div class="detail-value coordinates">-104.51857</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 10:54
+                        Last seen: 2025-08-15 11:02
                     </div>
                 </div>
 
@@ -756,29 +785,29 @@
                 <div class="card-header">
                     <div class="equipment-id">Dump Truck 11301045</div>
                     <div class="equipment-type">Volvo</div>
-                    <div class="status-badge" style="background-color: #22c55e;">
-                        Good
+                    <div class="status-badge" style="background-color: #f59e0b;">
+                        Maintenance Required
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;">
-                            15/100h
+                        <span class="hours-text" style="color: #f59e0b;">
+                            53/100h
                         </span>
                         <span class="hours-percentage">
-                            15%
+                            53%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 15.0%; background-color: #22c55e;"></div>
+                        <div class="progress-fill" style="width: 53.0%; background-color: #f59e0b;"></div>
                     </div>
 
                     <div class="equipment-details">
                         <div class="detail-item">
                             <div class="detail-label">Status</div>
-                            <div class="detail-value">Idle</div>
+                            <div class="detail-value">Motion</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Brand</div>
@@ -787,17 +816,17 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.12023</div>
+                        <div class="detail-value coordinates">52.12088</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52471</div>
+                        <div class="detail-value coordinates">-104.51200</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 11:15
+                        Last seen: 2025-08-15 11:08
                     </div>
                 </div>
 
@@ -812,29 +841,29 @@
                 <div class="card-header">
                     <div class="equipment-id">Welder 11302678</div>
                     <div class="equipment-type">Lincoln</div>
-                    <div class="status-badge" style="background-color: #22c55e;">
-                        Good
+                    <div class="status-badge" style="background-color: #f59e0b;">
+                        Maintenance Required
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;">
-                            16/100h
+                        <span class="hours-text" style="color: #f59e0b;">
+                            81/100h
                         </span>
                         <span class="hours-percentage">
-                            16%
+                            81%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 16.0%; background-color: #22c55e;"></div>
+                        <div class="progress-fill" style="width: 81.0%; background-color: #f59e0b;"></div>
                     </div>
 
                     <div class="equipment-details">
                         <div class="detail-item">
                             <div class="detail-label">Status</div>
-                            <div class="detail-value">Idle</div>
+                            <div class="detail-value">Active</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Brand</div>
@@ -843,17 +872,17 @@
                         
                     <div class="detail-item">
                         <div class="detail-label">Latitude</div>
-                        <div class="detail-value coordinates">52.12241</div>
+                        <div class="detail-value coordinates">52.12217</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Longitude</div>
-                        <div class="detail-value coordinates">-104.52838</div>
+                        <div class="detail-value coordinates">-104.51184</div>
                     </div>
                 
                     </div>
 
                     <div class="last-seen">
-                        Last seen: 2025-08-15 10:52
+                        Last seen: 2025-08-15 11:16
                     </div>
                 </div>
 
@@ -867,7 +896,7 @@
         </div>
 
         <div class="refresh-info">
-            <p>Auto-refresh every 5 minutes | Last updated: 2025-08-15 11:17:49</p>
+            <p>Auto-refresh every 5 minutes | Last updated: 2025-08-15 11:27:10</p>
             <p>Click on Generator 11293651 to view detailed location and timeline</p>
         </div>
     </div>
@@ -885,6 +914,6 @@
             });
         });
     </script>
-<!-- Updated: 2025-08-15 11:17:57 -->
+<!-- Updated: 2025-08-15 11:27:12 -->
 </body>
 </html>
