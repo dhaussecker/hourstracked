@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Equipment Overview</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f8fafc; 
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-total { color: #3b82f6; }
+        .stat-active { color: #22c55e; }
+        .stat-caution { color: #f59e0b; }
+        .stat-critical { color: #dc2626; }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .equipment-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .equipment-card.clickable {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+        }
+
+        .equipment-card.clickable:hover {
+            border-color: #2563eb;
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .equipment-id {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .equipment-type {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .hours-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .hours-text {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .hours-percentage {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .equipment-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .coordinates {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+        }
+
+        .offline-overlay {
+            position: relative;
+        }
+
+        .offline-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(107, 114, 128, 0.1);
+            border-radius: 12px;
+        }
+
+        .action-area {
+            padding: 15px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .view-details-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .view-details-btn:hover {
+            background: #2563eb;
+        }
+
+        .view-details-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .last-seen {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .refresh-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            color: #64748b;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Fleet Equipment Overview</h1>
+        <p>Real-time equipment status and hour tracking</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value stat-total">10</div>
+            <div class="stat-label">Total Equipment</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value stat-active">8</div>
+            <div class="stat-label">Active Now</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value stat-caution">3</div>
+            <div class="stat-label">Caution (50-90%)</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value stat-critical">0</div>
+            <div class="stat-label">Critical (90%+)</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="equipment-grid">
+            <div class="equipment-card clickable ">
+                <div class="card-header">
+                    <div class="equipment-id">Generator 11293651</div>
+                    <div class="equipment-type">United Rentals</div>
+                    <div class="status-badge" style="background-color: #f59e0b;">
+                        Caution
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #f59e0b;">
+                            53/100h
+                        </span>
+                        <span class="hours-percentage">
+                            53%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 53.0%; background-color: #f59e0b;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Idle</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">United Rentals</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.12999</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.51388</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:10
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="window.open('index.html', '_blank')" >
+                        VIEW LOCATION & TIMELINE
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Compressor 11294782</div>
+                    <div class="equipment-type">United Rentals</div>
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #22c55e;">
+                            32/100h
+                        </span>
+                        <span class="hours-percentage">
+                            32%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 32.0%; background-color: #22c55e;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Idle</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">United Rentals</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.13497</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.52263</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:07
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card offline-overlay">
+                <div class="card-header">
+                    <div class="equipment-id">Light Tower 11295433</div>
+                    <div class="equipment-type">United Rentals</div>
+                    <div class="status-badge" style="background-color: #6b7280;">
+                        Offline
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #6b7280;">
+                            13/100h
+                        </span>
+                        <span class="hours-percentage">
+                            13%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 13.0%; background-color: #6b7280;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Offline</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">United Rentals</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value">Unknown</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">GPS</div>
+                        <div class="detail-value">Offline</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-12 23:35
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Excavator 11296124</div>
+                    <div class="equipment-type">Caterpillar</div>
+                    <div class="status-badge" style="background-color: #f59e0b;">
+                        Caution
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #f59e0b;">
+                            51/100h
+                        </span>
+                        <span class="hours-percentage">
+                            51%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 51.0%; background-color: #f59e0b;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Active</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Caterpillar</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.12933</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.52696</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:08
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Skid Steer 11297856</div>
+                    <div class="equipment-type">Bobcat</div>
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #22c55e;">
+                            31/100h
+                        </span>
+                        <span class="hours-percentage">
+                            31%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 31.0%; background-color: #22c55e;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Motion</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Bobcat</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.12194</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.52453</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:10
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Forklift 11298567</div>
+                    <div class="equipment-type">Toyota</div>
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #22c55e;">
+                            36/100h
+                        </span>
+                        <span class="hours-percentage">
+                            36%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 36.0%; background-color: #22c55e;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Idle</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Toyota</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.13407</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.51095</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:23
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card offline-overlay">
+                <div class="card-header">
+                    <div class="equipment-id">Crane 11299348</div>
+                    <div class="equipment-type">Liebherr</div>
+                    <div class="status-badge" style="background-color: #6b7280;">
+                        Offline
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #6b7280;">
+                            42/100h
+                        </span>
+                        <span class="hours-percentage">
+                            42%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 42.0%; background-color: #6b7280;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Offline</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Liebherr</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value">Unknown</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">GPS</div>
+                        <div class="detail-value">Offline</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-13 05:35
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Bulldozer 11300129</div>
+                    <div class="equipment-type">Caterpillar</div>
+                    <div class="status-badge" style="background-color: #f59e0b;">
+                        Caution
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #f59e0b;">
+                            68/100h
+                        </span>
+                        <span class="hours-percentage">
+                            68%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 68.0%; background-color: #f59e0b;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Motion</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Caterpillar</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.13576</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.50936</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:19
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Dump Truck 11301045</div>
+                    <div class="equipment-type">Volvo</div>
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #22c55e;">
+                            40/100h
+                        </span>
+                        <span class="hours-percentage">
+                            40%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40.0%; background-color: #22c55e;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Active</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Volvo</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.13053</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.52748</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:31
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="equipment-card ">
+                <div class="card-header">
+                    <div class="equipment-id">Welder 11302678</div>
+                    <div class="equipment-type">Lincoln</div>
+                    <div class="status-badge" style="background-color: #22c55e;">
+                        Good
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="hours-display">
+                        <span class="hours-text" style="color: #22c55e;">
+                            47/100h
+                        </span>
+                        <span class="hours-percentage">
+                            47%
+                        </span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 47.0%; background-color: #22c55e;"></div>
+                    </div>
+
+                    <div class="equipment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Idle</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Brand</div>
+                            <div class="detail-value">Lincoln</div>
+                        </div>
+                        
+                    <div class="detail-item">
+                        <div class="detail-label">Latitude</div>
+                        <div class="detail-value coordinates">52.11973</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Longitude</div>
+                        <div class="detail-value coordinates">-104.51248</div>
+                    </div>
+                
+                    </div>
+
+                    <div class="last-seen">
+                        Last seen: 2025-08-14 21:25
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="view-details-btn" onclick="" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="refresh-info">
+            <p>🔄 Auto-refresh every 5 minutes | Last updated: 2025-08-14 21:35:50</p>
+            <p>💡 Click on Generator 11293651 to view detailed location and timeline</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh page every 5 minutes
+        setTimeout(() => {
+            window.location.reload();
+        }, 300000);
+
+        // Add click handler for equipment cards
+        document.querySelectorAll('.equipment-card.clickable').forEach(card => {
+            card.addEventListener('click', function() {
+                window.open('index.html', '_blank');
+            });
+        });
+    </script>
+<!-- Updated: 2025-08-14 21:36:04 -->
+</body>
+</html>
