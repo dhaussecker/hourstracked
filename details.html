@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equipment Details - 11293651</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -260,127 +258,84 @@
                 });
             });
 
-            // Create datasets for timeline chart - one dataset per state for better compatibility
-            const offData = [];
-            const onData = [];
+            // Create a simple bar chart without time scale
+            const chartData = [];
+            const chartLabels = [];
+            const chartColors = [];
             
             sortedData.forEach((item, index) => {
-                const startTime = parseTimestamp(item.start_time).getTime();
-                const endTime = parseTimestamp(item.end_time).getTime();
-                const config = stateConfig[item.state];
+                const startTime = toCentralTimeOnly(item.start_time);
+                const duration = item.duration;
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+                const durationText = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
                 
-                const dataPoint = {
-                    x: [startTime, endTime],
-                    y: 0,
-                    duration: item.duration,
-                    label: config.label
-                };
-                
-                if (item.state === 0) {
-                    offData.push(dataPoint);
-                } else {
-                    onData.push(dataPoint);
-                }
+                chartData.push(duration / 60); // Convert to minutes
+                chartLabels.push(`${startTime} (${durationText})`);
+                chartColors.push(stateConfig[item.state].color);
             });
 
-            // Create main timeline chart with better cross-browser support
+            // Create simple bar chart
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    datasets: [
-                        {
-                            label: 'OFF',
-                            data: offData.map(d => ({
-                                x: d.x,
-                                y: d.y
-                            })),
-                            backgroundColor: '#6b7280',
-                            borderColor: '#6b7280',
-                            borderWidth: 0,
-                            barThickness: 40
-                        },
-                        {
-                            label: 'ON',
-                            data: onData.map(d => ({
-                                x: d.x,
-                                y: d.y
-                            })),
-                            backgroundColor: '#22c55e',
-                            borderColor: '#22c55e',
-                            borderWidth: 0,
-                            barThickness: 40
-                        }
-                    ]
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Duration (minutes)',
+                        data: chartData,
+                        backgroundColor: chartColors,
+                        borderColor: chartColors,
+                        borderWidth: 1
+                    }]
                 },
                 options: {
-                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
                         x: {
-                            type: 'time',
-                            time: {
-                                unit: 'minute',
-                                stepSize: 10,
-                                displayFormats: {
-                                    minute: 'HH:mm',
-                                    hour: 'HH:mm'
-                                }
-                            },
                             title: {
                                 display: true,
-                                text: 'Time (CST)'
-                            },
-                            grid: {
-                                display: true,
-                                drawBorder: true
+                                text: 'Time & Duration'
                             },
                             ticks: {
-                                source: 'auto',
                                 autoSkip: true,
-                                maxRotation: 0
+                                maxRotation: 45,
+                                minRotation: 45
                             }
                         },
                         y: {
-                            display: false,
-                            stacked: false,
-                            min: -0.5,
-                            max: 0.5,
-                            grid: {
-                                display: false
-                            }
+                            title: {
+                                display: true,
+                                text: 'Duration (minutes)'
+                            },
+                            beginAtZero: true
                         }
                     },
                     plugins: {
                         legend: {
-                            display: true,
-                            position: 'top'
+                            display: false
                         },
                         tooltip: {
                             callbacks: {
                                 title: function(context) {
-                                    return context[0].dataset.label;
+                                    const index = context[0].dataIndex;
+                                    const item = sortedData[index];
+                                    return item.state_label;
                                 },
                                 label: function(context) {
-                                    const datasetIndex = context.datasetIndex;
                                     const index = context.dataIndex;
-                                    const dataset = datasetIndex === 0 ? offData : onData;
-                                    const item = dataset[index];
+                                    const item = sortedData[index];
                                     const duration = item.duration;
                                     const minutes = Math.floor(duration / 60);
                                     const seconds = duration % 60;
                                     return `Duration: ${minutes}m ${seconds}s`;
                                 },
                                 afterLabel: function(context) {
-                                    const datasetIndex = context.datasetIndex;
                                     const index = context.dataIndex;
-                                    const dataset = datasetIndex === 0 ? offData : onData;
-                                    const item = dataset[index];
-                                    const startTime = new Date(item.x[0]);
-                                    const endTime = new Date(item.x[1]);
+                                    const item = sortedData[index];
                                     return [
-                                        `Start: ${toCentralTimeOnly(startTime)}`,
-                                        `End: ${toCentralTimeOnly(endTime)}`
+                                        `Start: ${toCentralTimeOnly(item.start_time)}`,
+                                        `End: ${toCentralTimeOnly(item.end_time)}`
                                     ];
                                 }
                             }
@@ -432,6 +387,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-15 10:35:25 -->
+<!-- Updated: 2025-08-15 10:40:07 -->
 </body>
 </html>
