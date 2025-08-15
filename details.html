@@ -106,9 +106,8 @@
             min-width: 40px;
         }
 
-        .state-idle { background: #3498db; }
-        .state-motion { background: #e74c3c; }
-        .state-active { background: #2ecc71; }
+        .state-off { background: #6b7280; }
+        .state-on { background: #22c55e; }
 
         .legend {
             display: flex;
@@ -137,7 +136,7 @@
         <div class="container">
             <a href="index.html" class="back-btn">← Back to Location</a>
             <h1>Generator 11293651 - Equipment Timeline</h1>
-            <p>Detailed usage and state timeline for the last 24 hours (All times in CST/CDT)</p>
+            <p>Equipment ON/OFF timeline (All times in CST/CDT)</p>
         </div>
     </div>
 
@@ -145,21 +144,17 @@
         <div class="timeline-section">
             <div class="timeline-header">
                 <h2>Equipment State Timeline</h2>
-                <p>Timeline showing equipment states (OFF/IDLE/ON) over time</p>
+                <p>Timeline showing equipment states (OFF/ON) over time</p>
             </div>
 
             <div class="legend">
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #3498db;"></div>
-                    <span>Idle (OFF)</span>
+                    <div class="legend-color" style="background: #6b7280;"></div>
+                    <span>OFF</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #e74c3c;"></div>
-                    <span>Motion (IDLE)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #2ecc71;"></div>
-                    <span>Active (ON)</span>
+                    <div class="legend-color" style="background: #22c55e;"></div>
+                    <span>ON</span>
                 </div>
             </div>
 
@@ -187,7 +182,7 @@
     </div>
 
     <script>
-        const timelineData = [{"state": 0, "state_label": "Idle", "duration": 0, "start_time": 1755239549, "end_time": 1755239549}, {"state": 0, "state_label": "Idle", "duration": 848, "start_time": 1755239549, "end_time": 1755240397}, {"state": 4, "state_label": "Motion", "duration": 120, "start_time": 1755240397, "end_time": 1755240517}, {"state": 0, "state_label": "Idle", "duration": 65, "start_time": 1755240517, "end_time": 1755240582}, {"state": 4, "state_label": "Motion", "duration": 8, "start_time": 1755240582, "end_time": 1755240590}, {"state": 0, "state_label": "Idle", "duration": 161, "start_time": 1755240590, "end_time": 1755240751}, {"state": 0, "state_label": "Idle", "duration": 1009, "start_time": 1755240751, "end_time": 1755241760}, {"state": 4, "state_label": "Motion", "duration": 104, "start_time": 1755241760, "end_time": 1755241864}, {"state": 0, "state_label": "Idle", "duration": 328, "start_time": 1755241864, "end_time": 1755242192}, {"state": 0, "state_label": "Idle", "duration": 0, "start_time": 1755239953, "end_time": 1755239953}, {"state": 0, "state_label": "Idle", "duration": 1200, "start_time": 1755239953, "end_time": 1755241153}];
+        const timelineData = [{"state": 0, "state_label": "OFF", "duration": 0, "start_time": 1755239549, "end_time": 1755239549}, {"state": 0, "state_label": "OFF", "duration": 848, "start_time": 1755239549, "end_time": 1755240397}, {"state": 4, "state_label": "ON", "duration": 120, "start_time": 1755240397, "end_time": 1755240517}, {"state": 0, "state_label": "OFF", "duration": 65, "start_time": 1755240517, "end_time": 1755240582}, {"state": 4, "state_label": "ON", "duration": 8, "start_time": 1755240582, "end_time": 1755240590}, {"state": 0, "state_label": "OFF", "duration": 161, "start_time": 1755240590, "end_time": 1755240751}, {"state": 0, "state_label": "OFF", "duration": 1009, "start_time": 1755240751, "end_time": 1755241760}, {"state": 4, "state_label": "ON", "duration": 104, "start_time": 1755241760, "end_time": 1755241864}, {"state": 0, "state_label": "OFF", "duration": 328, "start_time": 1755241864, "end_time": 1755242192}, {"state": 0, "state_label": "OFF", "duration": 0, "start_time": 1755239953, "end_time": 1755239953}, {"state": 0, "state_label": "OFF", "duration": 1200, "start_time": 1755239953, "end_time": 1755241153}];
 
         // Function to convert timestamp to date
         function parseTimestamp(timestamp) {
@@ -234,9 +229,9 @@
             const ctx = document.getElementById('timelineChart').getContext('2d');
 
             const stateConfig = {
-                0: { color: '#3498db', label: 'Idle' },
-                4: { color: '#e74c3c', label: 'Motion' },
-                8: { color: '#2ecc71', label: 'Active' }
+                0: { color: '#6b7280', label: 'OFF' },
+                4: { color: '#22c55e', label: 'ON' },
+                8: { color: '#22c55e', label: 'ON' }  // Treat state 8 as ON too
             };
 
             // Sort timeline data by start time
@@ -264,21 +259,57 @@
                 });
             });
 
-            // Create main timeline chart with floating bars
+            // Create datasets for timeline chart - one dataset per state for better compatibility
+            const offData = [];
+            const onData = [];
+            
+            sortedData.forEach((item, index) => {
+                const startTime = parseTimestamp(item.start_time).getTime();
+                const endTime = parseTimestamp(item.end_time).getTime();
+                const config = stateConfig[item.state];
+                
+                const dataPoint = {
+                    x: [startTime, endTime],
+                    y: 0,
+                    duration: item.duration,
+                    label: config.label
+                };
+                
+                if (item.state === 0) {
+                    offData.push(dataPoint);
+                } else {
+                    onData.push(dataPoint);
+                }
+            });
+
+            // Create main timeline chart with better cross-browser support
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    datasets: [{
-                        label: 'Equipment State Timeline',
-                        data: allData.map(d => ({
-                            x: d.x,
-                            y: 0
-                        })),
-                        backgroundColor: allData.map(d => d.backgroundColor),
-                        borderColor: allData.map(d => d.borderColor),
-                        borderWidth: 0,
-                        barThickness: 60
-                    }]
+                    datasets: [
+                        {
+                            label: 'OFF',
+                            data: offData.map(d => ({
+                                x: d.x,
+                                y: d.y
+                            })),
+                            backgroundColor: '#6b7280',
+                            borderColor: '#6b7280',
+                            borderWidth: 0,
+                            barThickness: 40
+                        },
+                        {
+                            label: 'ON',
+                            data: onData.map(d => ({
+                                x: d.x,
+                                y: d.y
+                            })),
+                            backgroundColor: '#22c55e',
+                            borderColor: '#22c55e',
+                            borderWidth: 0,
+                            barThickness: 40
+                        }
+                    ]
                 },
                 options: {
                     indexAxis: 'y',
@@ -289,7 +320,7 @@
                             type: 'time',
                             time: {
                                 unit: 'minute',
-                                stepSize: 5,
+                                stepSize: 10,
                                 displayFormats: {
                                     minute: 'HH:mm',
                                     hour: 'HH:mm'
@@ -297,15 +328,21 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Time'
+                                text: 'Time (CST)'
                             },
                             grid: {
                                 display: true,
                                 drawBorder: true
+                            },
+                            ticks: {
+                                source: 'auto',
+                                autoSkip: true,
+                                maxRotation: 0
                             }
                         },
                         y: {
                             display: false,
+                            stacked: false,
                             min: -0.5,
                             max: 0.5,
                             grid: {
@@ -315,30 +352,34 @@
                     },
                     plugins: {
                         legend: {
-                            display: false
+                            display: true,
+                            position: 'top'
                         },
                         tooltip: {
                             callbacks: {
                                 title: function(context) {
-                                    const index = context[0].dataIndex;
-                                    return allData[index].label;
+                                    return context[0].dataset.label;
                                 },
                                 label: function(context) {
+                                    const datasetIndex = context.datasetIndex;
                                     const index = context.dataIndex;
-                                    const item = allData[index];
+                                    const dataset = datasetIndex === 0 ? offData : onData;
+                                    const item = dataset[index];
                                     const duration = item.duration;
                                     const minutes = Math.floor(duration / 60);
                                     const seconds = duration % 60;
                                     return `Duration: ${minutes}m ${seconds}s`;
                                 },
                                 afterLabel: function(context) {
+                                    const datasetIndex = context.datasetIndex;
                                     const index = context.dataIndex;
-                                    const item = allData[index];
+                                    const dataset = datasetIndex === 0 ? offData : onData;
+                                    const item = dataset[index];
                                     const startTime = new Date(item.x[0]);
                                     const endTime = new Date(item.x[1]);
                                     return [
-                                        `Start: ${toCentralTimeOnly(startTime)} CST`,
-                                        `End: ${toCentralTimeOnly(endTime)} CST`
+                                        `Start: ${toCentralTimeOnly(startTime)}`,
+                                        `End: ${toCentralTimeOnly(endTime)}`
                                     ];
                                 }
                             }
@@ -358,9 +399,7 @@
             timelineData.forEach(item => {
                 const row = document.createElement('tr');
 
-                let stateClass = 'state-idle';
-                if (item.state_label === 'Motion') stateClass = 'state-motion';
-                if (item.state_label === 'Active') stateClass = 'state-active';
+                let stateClass = item.state_label === 'OFF' ? 'state-off' : 'state-on';
 
                 const duration = item.duration;
                 const minutes = Math.floor(duration / 60);
@@ -392,6 +431,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-15 10:21:04 -->
+<!-- Updated: 2025-08-15 10:28:37 -->
 </body>
 </html>

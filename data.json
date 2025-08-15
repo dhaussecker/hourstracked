@@ -9,7 +9,7 @@
   "timeline": [
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 0,
       "start_time": 1755239549,
       "end_time": 1755239549,
@@ -17,7 +17,7 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 848,
       "start_time": 1755239549,
       "end_time": 1755240397,
@@ -25,7 +25,7 @@
     },
     {
       "state": 4,
-      "state_label": "Motion",
+      "state_label": "ON",
       "duration": 120,
       "start_time": 1755240397,
       "end_time": 1755240517,
@@ -33,7 +33,7 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 65,
       "start_time": 1755240517,
       "end_time": 1755240582,
@@ -41,7 +41,7 @@
     },
     {
       "state": 4,
-      "state_label": "Motion",
+      "state_label": "ON",
       "duration": 8,
       "start_time": 1755240582,
       "end_time": 1755240590,
@@ -49,7 +49,7 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 161,
       "start_time": 1755240590,
       "end_time": 1755240751,
@@ -57,7 +57,7 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 1009,
       "start_time": 1755240751,
       "end_time": 1755241760,
@@ -65,7 +65,7 @@
     },
     {
       "state": 4,
-      "state_label": "Motion",
+      "state_label": "ON",
       "duration": 104,
       "start_time": 1755241760,
       "end_time": 1755241864,
@@ -73,7 +73,7 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 328,
       "start_time": 1755241864,
       "end_time": 1755242192,
@@ -81,7 +81,7 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 0,
       "start_time": 1755239953,
       "end_time": 1755239953,
@@ -89,12 +89,12 @@
     },
     {
       "state": 0,
-      "state_label": "Idle",
+      "state_label": "OFF",
       "duration": 1200,
       "start_time": 1755239953,
       "end_time": 1755241153,
       "device": "nRF_01"
     }
   ],
-  "generated_at": "2025-08-15T10:20:52.435347"
+  "generated_at": "2025-08-15T10:28:32.007944"
 }
