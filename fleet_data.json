@@ -4,73 +4,73 @@
       "id": "11293651",
       "type": "Generator",
       "brand": "United Rentals",
-      "hours_used": 84,
+      "hours_used": 53,
       "hours_total": 100,
       "active": true,
       "status": "Motion",
-      "lat": 52.131986605674534,
-      "lon": -104.52607411348042,
-      "last_seen": "2025-08-15T00:13:38.039960"
+      "lat": 52.130803255480544,
+      "lon": -104.52316813535143,
+      "last_seen": "2025-08-15T00:24:58.950409"
     },
     {
       "id": "11294782",
       "type": "Compressor",
       "brand": "United Rentals",
-      "hours_used": 52,
+      "hours_used": 95,
       "hours_total": 100,
       "active": true,
       "status": "Motion",
-      "lat": 52.12945912174032,
-      "lon": -104.52670420825093,
-      "last_seen": "2025-08-15T00:29:38.039960"
+      "lat": 52.12105448403868,
+      "lon": -104.52522932253164,
+      "last_seen": "2025-08-15T00:43:58.951410"
     },
     {
       "id": "11295433",
       "type": "Light Tower",
       "brand": "United Rentals",
-      "hours_used": 19,
+      "hours_used": 27,
       "hours_total": 100,
       "active": false,
       "status": "Offline",
       "lat": null,
       "lon": null,
-      "last_seen": "2025-08-13T10:43:38.039960"
+      "last_seen": "2025-08-13T01:54:58.951410"
     },
     {
       "id": "11296124",
       "type": "Excavator",
       "brand": "Caterpillar",
-      "hours_used": 59,
+      "hours_used": 71,
       "hours_total": 100,
       "active": true,
-      "status": "Active",
-      "lat": 52.1278013694341,
-      "lon": -104.51811066840565,
-      "last_seen": "2025-08-15T00:29:38.039960"
+      "status": "Idle",
+      "lat": 52.11960060332381,
+      "lon": -104.52834435816665,
+      "last_seen": "2025-08-15T00:29:58.951410"
     },
     {
       "id": "11297856",
       "type": "Skid Steer",
       "brand": "Bobcat",
-      "hours_used": 18,
+      "hours_used": 31,
       "hours_total": 100,
       "active": true,
-      "status": "Active",
-      "lat": 52.13208624323002,
-      "lon": -104.5099830275099,
-      "last_seen": "2025-08-15T00:37:38.039960"
+      "status": "Motion",
+      "lat": 52.11960130526055,
+      "lon": -104.51514851097892,
+      "last_seen": "2025-08-15T00:33:58.951410"
     },
     {
       "id": "11298567",
       "type": "Forklift",
       "brand": "Toyota",
-      "hours_used": 81,
+      "hours_used": 35,
       "hours_total": 100,
       "active": true,
       "status": "Idle",
-      "lat": 52.12120280243981,
-      "lon": -104.52260207808068,
-      "last_seen": "2025-08-15T00:23:38.039960"
+      "lat": 52.12554023543563,
+      "lon": -104.51109787564769,
+      "last_seen": "2025-08-15T00:28:58.951410"
     },
     {
       "id": "11299348",
@@ -82,44 +82,44 @@
       "status": "Offline",
       "lat": null,
       "lon": null,
-      "last_seen": "2025-08-14T16:43:38.039960"
+      "last_seen": "2025-08-13T22:54:58.951410"
     },
     {
       "id": "11300129",
       "type": "Bulldozer",
       "brand": "Caterpillar",
-      "hours_used": 61,
+      "hours_used": 30,
       "hours_total": 100,
       "active": true,
-      "status": "Idle",
-      "lat": 52.12939490780357,
-      "lon": -104.52061802728281,
-      "last_seen": "2025-08-15T00:13:38.039960"
+      "status": "Motion",
+      "lat": 52.126601384335,
+      "lon": -104.5128463171268,
+      "last_seen": "2025-08-15T00:42:58.951410"
     },
     {
       "id": "11301045",
       "type": "Dump Truck",
       "brand": "Volvo",
-      "hours_used": 50,
+      "hours_used": 82,
       "hours_total": 100,
       "active": true,
-      "status": "Motion",
-      "lat": 52.12723486154158,
-      "lon": -104.52101573340234,
-      "last_seen": "2025-08-15T00:31:38.039960"
+      "status": "Active",
+      "lat": 52.131583738551114,
+      "lon": -104.52157305446724,
+      "last_seen": "2025-08-15T00:46:58.951410"
     },
     {
       "id": "11302678",
       "type": "Welder",
       "brand": "Lincoln",
-      "hours_used": 59,
+      "hours_used": 16,
       "hours_total": 100,
       "active": true,
-      "status": "Idle",
-      "lat": 52.1308292866871,
-      "lon": -104.519573782871,
-      "last_seen": "2025-08-15T00:38:38.039960"
+      "status": "Active",
+      "lat": 52.13623028515091,
+      "lon": -104.52496819887419,
+      "last_seen": "2025-08-15T00:39:58.951410"
     }
   ],
-  "generated_at": "2025-08-15T00:43:38.043477"
+  "generated_at": "2025-08-15T00:54:58.951914"
 }

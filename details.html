@@ -137,7 +137,7 @@
         <div class="container">
             <a href="index.html" class="back-btn">← Back to Location</a>
             <h1>Generator 11293651 - Equipment Timeline</h1>
-            <p>Detailed usage and state timeline for the last 24 hours</p>
+            <p>Detailed usage and state timeline for the last 24 hours (All times in CST/CDT)</p>
         </div>
     </div>
 
@@ -188,6 +188,34 @@
 
     <script>
         const timelineData = [{"state": 0, "state_label": "Idle", "duration": 0, "start_time": "2025-08-15T06:32:29", "end_time": "2025-08-15T06:32:29"}, {"state": 0, "state_label": "Idle", "duration": 848, "start_time": "2025-08-15T06:32:29", "end_time": "2025-08-15T06:46:37"}, {"state": 4, "state_label": "Motion", "duration": 120, "start_time": "2025-08-15T06:46:37", "end_time": "2025-08-15T06:48:37"}, {"state": 0, "state_label": "Idle", "duration": 65, "start_time": "2025-08-15T06:48:37", "end_time": "2025-08-15T06:49:42"}, {"state": 4, "state_label": "Motion", "duration": 8, "start_time": "2025-08-15T06:49:42", "end_time": "2025-08-15T06:49:50"}, {"state": 0, "state_label": "Idle", "duration": 161, "start_time": "2025-08-15T06:49:50", "end_time": "2025-08-15T06:52:31"}, {"state": 0, "state_label": "Idle", "duration": 1009, "start_time": "2025-08-15T06:52:31", "end_time": "2025-08-15T07:09:20"}, {"state": 4, "state_label": "Motion", "duration": 104, "start_time": "2025-08-15T07:09:20", "end_time": "2025-08-15T07:11:04"}, {"state": 0, "state_label": "Idle", "duration": 328, "start_time": "2025-08-15T07:11:04", "end_time": "2025-08-15T07:16:32"}, {"state": 0, "state_label": "Idle", "duration": 0, "start_time": "2025-08-15T06:39:13", "end_time": "2025-08-15T06:39:13"}, {"state": 0, "state_label": "Idle", "duration": 1200, "start_time": "2025-08-15T06:39:13", "end_time": "2025-08-15T06:59:13"}];
+
+        // Function to format time in Central Time
+        function toCentralTime(dateString) {
+            const date = new Date(dateString);
+            // Format in Central Time (America/Chicago handles both CST and CDT)
+            return date.toLocaleString('en-US', {
+                timeZone: 'America/Chicago',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        // Function to format time only in Central Time
+        function toCentralTimeOnly(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('en-US', {
+                timeZone: 'America/Chicago',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
 
         // Initialize timeline chart
         function initTimelineChart() {
@@ -297,8 +325,8 @@
                                     const startTime = new Date(item.x[0]);
                                     const endTime = new Date(item.x[1]);
                                     return [
-                                        `Start: ${startTime.toLocaleTimeString()}`,
-                                        `End: ${endTime.toLocaleTimeString()}`
+                                        `Start: ${toCentralTimeOnly(startTime)} CST`,
+                                        `End: ${toCentralTimeOnly(endTime)} CST`
                                     ];
                                 }
                             }
@@ -327,8 +355,8 @@
                 const seconds = duration % 60;
                 const durationText = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
 
-                const startTime = new Date(item.start_time).toLocaleTimeString();
-                const endTime = new Date(item.end_time).toLocaleTimeString();
+                const startTime = toCentralTimeOnly(item.start_time) + ' CST';
+                const endTime = toCentralTimeOnly(item.end_time) + ' CST';
 
                 row.innerHTML = `
                     <td><strong>${item.state_label}</strong></td>
@@ -352,6 +380,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-15 00:43:41 -->
+<!-- Updated: 2025-08-15 00:55:06 -->
 </body>
 </html>
