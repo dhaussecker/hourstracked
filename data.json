@@ -1,36 +1,68 @@
 {
   "location": {
     "device_id": "11293651",
-    "lat": 52.12832,
-    "lon": -104.51881,
-    "timestamp": "2025-08-14T21:36:43",
-    "unix_time": 1755229002
+    "lat": 0.0,
+    "lon": 0.0,
+    "timestamp": "2025-08-14T21:43:11",
+    "unix_time": 1755229390
   },
   "timeline": [
     {
       "state": 0,
       "state_label": "Idle",
-      "duration": 2400,
+      "duration": 160,
       "start_time": "1970-01-01T00:00:00",
-      "end_time": "1970-01-01T00:40:00",
-      "device": "nRF_02"
+      "end_time": "1970-01-01T00:02:40",
+      "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
-      "duration": 2400,
-      "start_time": "1970-01-01T00:00:00",
-      "end_time": "1970-01-01T00:40:00",
-      "device": "nRF_03"
+      "duration": 1040,
+      "start_time": "1970-01-01T00:02:40",
+      "end_time": "1970-01-01T00:20:00",
+      "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
-      "duration": 2400,
-      "start_time": "1970-01-01T00:00:00",
-      "end_time": "1970-01-01T00:40:00",
+      "duration": 249,
+      "start_time": "1970-01-01T00:20:00",
+      "end_time": "1970-01-01T00:24:09",
+      "device": "nRF_01"
+    },
+    {
+      "state": 4,
+      "state_label": "Motion",
+      "duration": 473,
+      "start_time": "1970-01-01T00:24:09",
+      "end_time": "1970-01-01T00:32:02",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 264,
+      "start_time": "1970-01-01T00:32:02",
+      "end_time": "1970-01-01T00:36:26",
+      "device": "nRF_01"
+    },
+    {
+      "state": 4,
+      "state_label": "Motion",
+      "duration": 448,
+      "start_time": "1970-01-01T00:36:26",
+      "end_time": "1970-01-01T00:43:54",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 9,
+      "start_time": "1970-01-01T00:43:54",
+      "end_time": "1970-01-01T00:44:03",
       "device": "nRF_01"
     }
   ],
-  "generated_at": "2025-08-14T21:37:06.100990"
+  "generated_at": "2025-08-14T22:01:43.313577"
 }
