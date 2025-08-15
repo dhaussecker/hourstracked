@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Location - 11293651</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #f0f2f5; 
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .location-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .map-container {
+            height: 250px;
+            position: relative;
+        }
+
+        .equipment-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .equipment-id {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .equipment-type {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .hours-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hours-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .details-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .details-link:hover {
+            text-decoration: underline;
+        }
+
+        .card-info {
+            padding: 20px;
+        }
+
+        .location-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .coordinates {
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .timestamp {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .map-pin {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #dc2626;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="location-card">
+        <div class="map-container">
+            <div class="equipment-overlay">
+                <div class="equipment-id">Generator 11293651</div>
+                <div class="equipment-type">United Rentals Equipment</div>
+                <div class="hours-display">
+                    <span class="hours-text">Hours 36/100</span>
+                    <a href="details.html" class="details-link">SEE DETAILS HERE</a>
+                </div>
+            </div>
+            <div id="map" style="height: 100%; width: 100%;"></div>
+            <div class="map-pin">📍</div>
+        </div>
+
+        <div class="card-info">
+            <div class="location-info">
+                <div class="info-item">
+                    <div class="info-label">Latitude</div>
+                    <div class="info-value coordinates">52.12831</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Longitude</div>
+                    <div class="info-value coordinates">-104.51867</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Hours Used</div>
+                    <div class="info-value">36/100</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Status</div>
+                    <div class="info-value" style="color: #22c55e;">Active</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="window.open('details.html', '_blank')">
+                    View Timeline
+                </button>
+                <button class="btn btn-secondary" onclick="centerMap()">
+                    Center Map
+                </button>
+            </div>
+
+            <div class="timestamp">
+                Last updated: 2025-08-14 21:12:38
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map
+        const lat = 52.12831;
+        const lon = -104.51867;
+
+        const map = L.map('map', {
+            center: [lat, lon],
+            zoom: 15,
+            zoomControl: false,
+            attributionControl: false
+        });
+
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: ''
+        }).addTo(map);
+
+        // Custom marker icon
+        const customIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background: #dc2626; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+        });
+
+        // Add marker
+        const marker = L.marker([lat, lon], {
+            icon: customIcon
+        }).addTo(map);
+
+        // Popup with equipment info
+        marker.bindPopup(`
+            <div style="text-align: center; padding: 5px;">
+                <strong>Generator 11293651</strong><br>
+                <small>United Rentals</small><br>
+                <em>36h / 100% used</em>
+            </div>
+        `);
+
+        function centerMap() {
+            map.setView([lat, lon], 15);
+        }
+
+        // Auto-refresh every 5 minutes
+        setTimeout(() => {
+            window.location.reload();
+        }, 300000);
+    </script>
+<!-- Updated: 2025-08-14 21:23:24 -->
+</body>
+</html>
