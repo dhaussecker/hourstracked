@@ -10,51 +10,91 @@
     {
       "state": 0,
       "state_label": "Idle",
-      "duration": 160,
-      "start_time": "1970-01-01T00:00:00",
-      "end_time": "1970-01-01T00:02:40",
-      "device": "nRF_03"
+      "duration": 0,
+      "start_time": "2025-08-15T06:32:29",
+      "end_time": "2025-08-15T06:32:29",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 848,
+      "start_time": "2025-08-15T06:32:29",
+      "end_time": "2025-08-15T06:46:37",
+      "device": "nRF_01"
     },
     {
       "state": 4,
       "state_label": "Motion",
-      "duration": 112,
-      "start_time": "1970-01-01T00:02:40",
-      "end_time": "1970-01-01T00:04:32",
-      "device": "nRF_03"
+      "duration": 120,
+      "start_time": "2025-08-15T06:46:37",
+      "end_time": "2025-08-15T06:48:37",
+      "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
-      "duration": 929,
-      "start_time": "1970-01-01T00:04:32",
-      "end_time": "1970-01-01T00:20:01",
-      "device": "nRF_03"
-    },
-    {
-      "state": 0,
-      "state_label": "Idle",
-      "duration": 969,
-      "start_time": "1970-01-01T00:20:01",
-      "end_time": "1970-01-01T00:36:10",
-      "device": "nRF_03"
+      "duration": 65,
+      "start_time": "2025-08-15T06:48:37",
+      "end_time": "2025-08-15T06:49:42",
+      "device": "nRF_01"
     },
     {
       "state": 4,
       "state_label": "Motion",
-      "duration": 96,
-      "start_time": "1970-01-01T00:36:10",
-      "end_time": "1970-01-01T00:37:46",
-      "device": "nRF_03"
+      "duration": 8,
+      "start_time": "2025-08-15T06:49:42",
+      "end_time": "2025-08-15T06:49:50",
+      "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
-      "duration": 377,
-      "start_time": "1970-01-01T00:37:46",
-      "end_time": "1970-01-01T00:44:03",
-      "device": "nRF_03"
+      "duration": 161,
+      "start_time": "2025-08-15T06:49:50",
+      "end_time": "2025-08-15T06:52:31",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 1009,
+      "start_time": "2025-08-15T06:52:31",
+      "end_time": "2025-08-15T07:09:20",
+      "device": "nRF_01"
+    },
+    {
+      "state": 4,
+      "state_label": "Motion",
+      "duration": 104,
+      "start_time": "2025-08-15T07:09:20",
+      "end_time": "2025-08-15T07:11:04",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 328,
+      "start_time": "2025-08-15T07:11:04",
+      "end_time": "2025-08-15T07:16:32",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 0,
+      "start_time": "2025-08-15T06:39:13",
+      "end_time": "2025-08-15T06:39:13",
+      "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 1200,
+      "start_time": "2025-08-15T06:39:13",
+      "end_time": "2025-08-15T06:59:13",
+      "device": "nRF_01"
     }
   ],
-  "generated_at": "2025-08-15T00:38:06.811094"
+  "generated_at": "2025-08-15T00:43:34.698826"
 }
