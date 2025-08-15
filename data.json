@@ -3,9 +3,66 @@
     "device_id": "11293651",
     "lat": 0.0,
     "lon": 0.0,
-    "timestamp": "2025-08-15T12:23:11",
-    "unix_time": 1755282189
+    "timestamp": "2025-08-15T12:57:21",
+    "unix_time": 1755284241
   },
-  "timeline": [],
-  "generated_at": "2025-08-15T12:55:53.680267"
+  "timeline": [
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 0,
+      "start_time": 1755283593,
+      "end_time": 1755283593,
+      "device": "nRF_02"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 20,
+      "start_time": 1755283593,
+      "end_time": 1755283613,
+      "device": "nRF_02"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 65,
+      "start_time": 1755283613,
+      "end_time": 1755283678,
+      "device": "nRF_02"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 65,
+      "start_time": 1755283678,
+      "end_time": 1755283743,
+      "device": "nRF_02"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 109,
+      "start_time": 1755283743,
+      "end_time": 1755283852,
+      "device": "nRF_02"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 16,
+      "start_time": 1755283852,
+      "end_time": 1755283868,
+      "device": "nRF_02"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 55,
+      "start_time": 1755283868,
+      "end_time": 1755283923,
+      "device": "nRF_02"
+    }
+  ],
+  "generated_at": "2025-08-15T12:57:35.694945"
 }
