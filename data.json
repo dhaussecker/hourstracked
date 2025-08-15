@@ -1,10 +1,10 @@
 {
   "location": {
     "device_id": "11293651",
-    "lat": 52.12832,
-    "lon": -104.51881,
-    "timestamp": "2025-08-14T21:36:43",
-    "unix_time": 1755229002
+    "lat": 52.12829,
+    "lon": -104.51857,
+    "timestamp": "2025-08-15T00:19:46",
+    "unix_time": 1755238784
   },
   "timeline": [
     {
@@ -62,7 +62,55 @@
       "start_time": "1970-01-01T00:43:54",
       "end_time": "1970-01-01T00:44:03",
       "device": "nRF_01"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 160,
+      "start_time": "1970-01-01T00:00:00",
+      "end_time": "1970-01-01T00:02:40",
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "Motion",
+      "duration": 112,
+      "start_time": "1970-01-01T00:02:40",
+      "end_time": "1970-01-01T00:04:32",
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 929,
+      "start_time": "1970-01-01T00:04:32",
+      "end_time": "1970-01-01T00:20:01",
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 969,
+      "start_time": "1970-01-01T00:20:01",
+      "end_time": "1970-01-01T00:36:10",
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "Motion",
+      "duration": 96,
+      "start_time": "1970-01-01T00:36:10",
+      "end_time": "1970-01-01T00:37:46",
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 377,
+      "start_time": "1970-01-01T00:37:46",
+      "end_time": "1970-01-01T00:44:03",
+      "device": "nRF_03"
     }
   ],
-  "generated_at": "2025-08-14T22:19:25.944741"
+  "generated_at": "2025-08-15T00:20:38.401580"
 }

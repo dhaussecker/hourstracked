@@ -165,6 +165,8 @@
 
             <div class="chart-container">
                 <canvas id="timelineChart"></canvas>
+                <h3 style="margin-top: 30px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">Continuous Timeline View</h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Connected bars showing state duration over time</p>
             </div>
 
             <table class="timeline-table">
@@ -185,51 +187,73 @@
     </div>
 
     <script>
-        const timelineData = [{"state": 0, "state_label": "Idle", "duration": 160, "start_time": "1970-01-01T00:00:00", "end_time": "1970-01-01T00:02:40"}, {"state": 0, "state_label": "Idle", "duration": 1040, "start_time": "1970-01-01T00:02:40", "end_time": "1970-01-01T00:20:00"}, {"state": 0, "state_label": "Idle", "duration": 249, "start_time": "1970-01-01T00:20:00", "end_time": "1970-01-01T00:24:09"}, {"state": 4, "state_label": "Motion", "duration": 473, "start_time": "1970-01-01T00:24:09", "end_time": "1970-01-01T00:32:02"}, {"state": 0, "state_label": "Idle", "duration": 264, "start_time": "1970-01-01T00:32:02", "end_time": "1970-01-01T00:36:26"}, {"state": 4, "state_label": "Motion", "duration": 448, "start_time": "1970-01-01T00:36:26", "end_time": "1970-01-01T00:43:54"}, {"state": 0, "state_label": "Idle", "duration": 9, "start_time": "1970-01-01T00:43:54", "end_time": "1970-01-01T00:44:03"}];
+        const timelineData = [{"state": 0, "state_label": "Idle", "duration": 160, "start_time": "1970-01-01T00:00:00", "end_time": "1970-01-01T00:02:40"}, {"state": 0, "state_label": "Idle", "duration": 1040, "start_time": "1970-01-01T00:02:40", "end_time": "1970-01-01T00:20:00"}, {"state": 0, "state_label": "Idle", "duration": 249, "start_time": "1970-01-01T00:20:00", "end_time": "1970-01-01T00:24:09"}, {"state": 4, "state_label": "Motion", "duration": 473, "start_time": "1970-01-01T00:24:09", "end_time": "1970-01-01T00:32:02"}, {"state": 0, "state_label": "Idle", "duration": 264, "start_time": "1970-01-01T00:32:02", "end_time": "1970-01-01T00:36:26"}, {"state": 4, "state_label": "Motion", "duration": 448, "start_time": "1970-01-01T00:36:26", "end_time": "1970-01-01T00:43:54"}, {"state": 0, "state_label": "Idle", "duration": 9, "start_time": "1970-01-01T00:43:54", "end_time": "1970-01-01T00:44:03"}, {"state": 0, "state_label": "Idle", "duration": 160, "start_time": "1970-01-01T00:00:00", "end_time": "1970-01-01T00:02:40"}, {"state": 4, "state_label": "Motion", "duration": 112, "start_time": "1970-01-01T00:02:40", "end_time": "1970-01-01T00:04:32"}, {"state": 0, "state_label": "Idle", "duration": 929, "start_time": "1970-01-01T00:04:32", "end_time": "1970-01-01T00:20:01"}, {"state": 0, "state_label": "Idle", "duration": 969, "start_time": "1970-01-01T00:20:01", "end_time": "1970-01-01T00:36:10"}, {"state": 4, "state_label": "Motion", "duration": 96, "start_time": "1970-01-01T00:36:10", "end_time": "1970-01-01T00:37:46"}, {"state": 0, "state_label": "Idle", "duration": 377, "start_time": "1970-01-01T00:37:46", "end_time": "1970-01-01T00:44:03"}];
 
         // Initialize timeline chart
         function initTimelineChart() {
             const ctx = document.getElementById('timelineChart').getContext('2d');
 
-            const datasets = [];
             const stateConfig = {
-                0: { color: '#3498db', label: 'Idle', yLevel: 0 },
-                4: { color: '#e74c3c', label: 'Motion', yLevel: 1 },
-                8: { color: '#2ecc71', label: 'Active', yLevel: 2 }
+                0: { color: '#3498db', label: 'Idle' },
+                4: { color: '#e74c3c', label: 'Motion' },
+                8: { color: '#2ecc71', label: 'Active' }
             };
 
-            [0, 4, 8].forEach(stateValue => {
-                const stateItems = timelineData.filter(item => item.state === stateValue);
+            // Create horizontal bar data
+            const barData = [];
+            const labels = [];
+            const backgroundColors = [];
+            const borderColors = [];
+            
+            // Sort timeline data by start time
+            const sortedData = [...timelineData].sort((a, b) => 
+                new Date(a.start_time) - new Date(b.start_time)
+            );
 
-                if (stateItems.length > 0) {
-                    const data = stateItems.map(item => {
-                        const startTime = new Date(item.start_time);
-                        const endTime = new Date(item.end_time);
-                        const duration = (endTime - startTime) / 1000; // seconds
-
-                        return {
-                            x: startTime.getTime(),
-                            y: stateConfig[stateValue].yLevel,
-                            duration: duration,
-                            stateLabel: item.state_label
-                        };
-                    });
-
-                    datasets.push({
-                        label: stateConfig[stateValue].label,
-                        data: data,
-                        backgroundColor: stateConfig[stateValue].color,
-                        borderColor: stateConfig[stateValue].color,
-                        pointRadius: 6,
-                        pointHoverRadius: 8
-                    });
-                }
+            // Process each timeline entry
+            sortedData.forEach((item, index) => {
+                const startTime = new Date(item.start_time);
+                const endTime = new Date(item.end_time);
+                const duration = (endTime - startTime) / 1000 / 60; // Convert to minutes
+                
+                barData.push({
+                    x: [startTime, endTime],
+                    y: item.state_label,
+                    duration: duration,
+                    state: item.state,
+                    stateLabel: item.state_label
+                });
+                
+                labels.push(`${item.state_label} #${index + 1}`);
+                backgroundColors.push(stateConfig[item.state].color);
+                borderColors.push(stateConfig[item.state].color);
             });
 
+            // Create floating bar chart for timeline
             new Chart(ctx, {
-                type: 'scatter',
-                data: { datasets: datasets },
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Equipment State Timeline',
+                        data: barData.map(item => {
+                            return {
+                                x: [item.x[0].getTime(), item.x[1].getTime()],
+                                y: item.y,
+                                stateLabel: item.stateLabel,
+                                duration: item.duration
+                            };
+                        }),
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 0,
+                        barThickness: 40,
+                        categoryPercentage: 1.0,
+                        barPercentage: 1.0
+                    }]
+                },
                 options: {
+                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
@@ -244,34 +268,145 @@
                             title: {
                                 display: true,
                                 text: 'Time'
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 12
                             }
                         },
                         y: {
-                            min: -0.5,
-                            max: 2.5,
-                            ticks: {
-                                stepSize: 1,
-                                callback: function(value) {
-                                    if (value === 0) return 'Idle';
-                                    if (value === 1) return 'Motion';
-                                    if (value === 2) return 'Active';
-                                    return '';
-                                }
-                            },
+                            stacked: false,
                             title: {
                                 display: true,
-                                text: 'Equipment State'
+                                text: 'State Events'
+                            },
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
                             }
                         }
                     },
                     plugins: {
+                        legend: {
+                            display: false
+                        },
                         tooltip: {
                             callbacks: {
+                                title: function(context) {
+                                    return context[0].raw.stateLabel;
+                                },
                                 label: function(context) {
                                     const duration = context.raw.duration;
+                                    const hours = Math.floor(duration / 60);
+                                    const minutes = Math.floor(duration % 60);
+                                    const seconds = Math.floor((duration * 60) % 60);
+                                    
+                                    if (hours > 0) {
+                                        return `Duration: ${hours}h ${minutes}m ${seconds}s`;
+                                    } else if (minutes > 0) {
+                                        return `Duration: ${minutes}m ${seconds}s`;
+                                    } else {
+                                        return `Duration: ${seconds}s`;
+                                    }
+                                },
+                                afterLabel: function(context) {
+                                    const startTime = new Date(context.raw.x[0]);
+                                    const endTime = new Date(context.raw.x[1]);
+                                    return [
+                                        `Start: ${startTime.toLocaleTimeString()}`,
+                                        `End: ${endTime.toLocaleTimeString()}`
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Alternative: Create a continuous timeline view
+            const canvas = document.createElement('canvas');
+            canvas.id = 'continuousTimeline';
+            canvas.style.width = '100%';
+            canvas.style.height = '80px';
+            canvas.style.marginTop = '20px';
+            
+            const chartContainer = document.querySelector('.chart-container');
+            chartContainer.appendChild(canvas);
+            
+            const ctxContinuous = canvas.getContext('2d');
+            
+            // Prepare data for continuous timeline
+            const continuousData = [];
+            sortedData.forEach(item => {
+                const config = stateConfig[item.state];
+                continuousData.push({
+                    x: [new Date(item.start_time).getTime(), new Date(item.end_time).getTime()],
+                    y: 1,
+                    backgroundColor: config.color,
+                    borderColor: config.color,
+                    label: item.state_label,
+                    duration: item.duration
+                });
+            });
+
+            // Create continuous horizontal timeline
+            new Chart(ctxContinuous, {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Continuous State Timeline',
+                        data: continuousData,
+                        backgroundColor: continuousData.map(d => d.backgroundColor),
+                        borderColor: continuousData.map(d => d.borderColor),
+                        borderWidth: 0,
+                        barThickness: 50
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'hour',
+                                displayFormats: {
+                                    hour: 'HH:mm'
+                                }
+                            },
+                            title: {
+                                display: false
+                            },
+                            grid: {
+                                display: true,
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            display: false,
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return continuousData[context[0].dataIndex].label;
+                                },
+                                label: function(context) {
+                                    const item = continuousData[context.dataIndex];
+                                    const duration = item.duration;
                                     const minutes = Math.floor(duration / 60);
                                     const seconds = duration % 60;
-                                    return `${context.raw.stateLabel}: ${minutes}m ${seconds}s`;
+                                    return `Duration: ${minutes}m ${seconds}s`;
                                 }
                             }
                         }
@@ -322,6 +457,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-14 22:19:31 -->
+<!-- Updated: 2025-08-15 00:20:47 -->
 </body>
 </html>
