@@ -1,68 +1,156 @@
 {
   "location": {
     "device_id": "11293651",
-    "lat": 0.0,
-    "lon": 0.0,
-    "timestamp": "2025-08-15T12:57:21",
-    "unix_time": 1755284241
+    "lat": 52.12852,
+    "lon": -104.51898,
+    "timestamp": "2025-08-15T15:20:58",
+    "unix_time": 1755292856
   },
   "timeline": [
     {
-      "state": 0,
-      "state_label": "OFF",
+      "state": 4,
+      "state_label": "ON",
       "duration": 0,
-      "start_time": 1755283593,
-      "end_time": 1755283593,
-      "device": "nRF_02"
+      "start_time": 1755292049,
+      "end_time": 1755292049,
+      "device": "nRF_03"
     },
     {
-      "state": 0,
-      "state_label": "OFF",
+      "state": 4,
+      "state_label": "ON",
       "duration": 20,
-      "start_time": 1755283593,
-      "end_time": 1755283613,
-      "device": "nRF_02"
+      "start_time": 1755292049,
+      "end_time": 1755292069,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 21,
+      "start_time": 1755292069,
+      "end_time": 1755292090,
+      "device": "nRF_03"
     },
     {
       "state": 0,
       "state_label": "OFF",
-      "duration": 65,
-      "start_time": 1755283613,
-      "end_time": 1755283678,
-      "device": "nRF_02"
+      "duration": 1,
+      "start_time": 1755292090,
+      "end_time": 1755292091,
+      "device": "nRF_03"
     },
     {
       "state": 4,
       "state_label": "ON",
-      "duration": 65,
-      "start_time": 1755283678,
-      "end_time": 1755283743,
-      "device": "nRF_02"
-    },
-    {
-      "state": 4,
-      "state_label": "ON",
-      "duration": 109,
-      "start_time": 1755283743,
-      "end_time": 1755283852,
-      "device": "nRF_02"
+      "duration": 1,
+      "start_time": 1755292091,
+      "end_time": 1755292092,
+      "device": "nRF_03"
     },
     {
       "state": 0,
       "state_label": "OFF",
-      "duration": 16,
-      "start_time": 1755283852,
-      "end_time": 1755283868,
-      "device": "nRF_02"
+      "duration": 44,
+      "start_time": 1755292092,
+      "end_time": 1755292136,
+      "device": "nRF_03"
     },
     {
       "state": 4,
       "state_label": "ON",
-      "duration": 55,
-      "start_time": 1755283868,
-      "end_time": 1755283923,
-      "device": "nRF_02"
+      "duration": 24,
+      "start_time": 1755292136,
+      "end_time": 1755292160,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 2,
+      "start_time": 1755292160,
+      "end_time": 1755292162,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 1,
+      "start_time": 1755292162,
+      "end_time": 1755292163,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 1,
+      "start_time": 1755292163,
+      "end_time": 1755292164,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 3,
+      "start_time": 1755292164,
+      "end_time": 1755292167,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 2,
+      "start_time": 1755292167,
+      "end_time": 1755292169,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 144,
+      "start_time": 1755292169,
+      "end_time": 1755292313,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 37,
+      "start_time": 1755292313,
+      "end_time": 1755292350,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 94,
+      "start_time": 1755292350,
+      "end_time": 1755292444,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 93,
+      "start_time": 1755292444,
+      "end_time": 1755292537,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 91,
+      "start_time": 1755292537,
+      "end_time": 1755292628,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 52,
+      "start_time": 1755292628,
+      "end_time": 1755292680,
+      "device": "nRF_03"
     }
   ],
-  "generated_at": "2025-08-15T12:57:35.694945"
+  "generated_at": "2025-08-15T15:21:20.255352"
 }
