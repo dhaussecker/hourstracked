@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equipment Details - 11293651</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -157,10 +156,12 @@
                 </div>
             </div>
 
-            <div class="chart-container">
-                <canvas id="timelineChart"></canvas>
-                <h3 style="margin-top: 30px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">Continuous Timeline View</h3>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Connected bars showing state duration over time</p>
+            <div class="chart-container" style="padding: 20px; background: white; border-radius: 8px;">
+                <div id="timelineChart" style="width: 100%; height: 300px; position: relative; border: 1px solid #e2e8f0; border-radius: 4px; padding: 20px;">
+                    <!-- Timeline will be generated here -->
+                </div>
+                <h3 style="margin-top: 30px; margin-bottom: 10px; font-size: 16px; font-weight: 600;">Equipment State Timeline</h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">Visual timeline showing ON/OFF states throughout the day</p>
             </div>
 
             <table class="timeline-table">
@@ -223,14 +224,14 @@
             });
         }
 
-        // Initialize timeline chart
+        // Initialize custom timeline visualization
         function initTimelineChart() {
-            const ctx = document.getElementById('timelineChart').getContext('2d');
-
+            const container = document.getElementById('timelineChart');
+            
             const stateConfig = {
                 0: { color: '#6b7280', label: 'OFF' },
                 4: { color: '#22c55e', label: 'ON' },
-                8: { color: '#22c55e', label: 'ON' }  // Treat state 8 as ON too
+                8: { color: '#22c55e', label: 'ON' }
             };
 
             // Sort timeline data by start time
@@ -238,113 +239,83 @@
                 parseTimestamp(a.start_time) - parseTimestamp(b.start_time)
             );
 
-            // Create data for horizontal floating bars
-            const datasets = [];
-            const allData = [];
-            
-            sortedData.forEach((item, index) => {
-                const startTime = parseTimestamp(item.start_time).getTime();
-                const endTime = parseTimestamp(item.end_time).getTime();
-                const config = stateConfig[item.state];
-                
-                allData.push({
-                    x: [startTime, endTime],
-                    y: 0, // Single row for continuous timeline
-                    backgroundColor: config.color,
-                    borderColor: config.color,
-                    label: config.label,
-                    duration: item.duration,
-                    itemIndex: index
-                });
-            });
-
-            // Create a simple bar chart without time scale
-            const chartData = [];
-            const chartLabels = [];
-            const chartColors = [];
+            // Create HTML for timeline bars
+            let html = '<div style="display: flex; flex-direction: column; gap: 5px;">';
             
             sortedData.forEach((item, index) => {
                 const startTime = toCentralTimeOnly(item.start_time);
+                const endTime = toCentralTimeOnly(item.end_time);
                 const duration = item.duration;
                 const minutes = Math.floor(duration / 60);
                 const seconds = duration % 60;
                 const durationText = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+                const config = stateConfig[item.state];
                 
-                chartData.push(duration / 60); // Convert to minutes
-                chartLabels.push(`${startTime} (${durationText})`);
-                chartColors.push(stateConfig[item.state].color);
-            });
-
-            // Create simple bar chart
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                        label: 'Duration (minutes)',
-                        data: chartData,
-                        backgroundColor: chartColors,
-                        borderColor: chartColors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Time & Duration'
-                            },
-                            ticks: {
-                                autoSkip: true,
-                                maxRotation: 45,
-                                minRotation: 45
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Duration (minutes)'
-                            },
-                            beginAtZero: true
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                title: function(context) {
-                                    const index = context[0].dataIndex;
-                                    const item = sortedData[index];
-                                    return item.state_label;
-                                },
-                                label: function(context) {
-                                    const index = context.dataIndex;
-                                    const item = sortedData[index];
-                                    const duration = item.duration;
-                                    const minutes = Math.floor(duration / 60);
-                                    const seconds = duration % 60;
-                                    return `Duration: ${minutes}m ${seconds}s`;
-                                },
-                                afterLabel: function(context) {
-                                    const index = context.dataIndex;
-                                    const item = sortedData[index];
-                                    return [
-                                        `Start: ${toCentralTimeOnly(item.start_time)}`,
-                                        `End: ${toCentralTimeOnly(item.end_time)}`
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
+                // Calculate bar width based on duration (max 100%)
+                const maxDuration = Math.max(...sortedData.map(d => d.duration));
+                const widthPercent = (duration / maxDuration) * 100;
+                
+                html += `
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 5px;">
+                        <div style="min-width: 80px; font-size: 12px; color: #64748b;">
+                            ${startTime}
+                        </div>
+                        <div style="flex: 1; position: relative;">
+                            <div style="
+                                width: ${widthPercent}%;
+                                height: 30px;
+                                background: ${config.color};
+                                border-radius: 4px;
+                                display: flex;
+                                align-items: center;
+                                padding: 0 10px;
+                                color: white;
+                                font-size: 12px;
+                                font-weight: 600;
+                                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                            ">
+                                ${config.label} - ${durationText}
+                            </div>
+                        </div>
+                        <div style="min-width: 80px; font-size: 12px; color: #64748b; text-align: right;">
+                            ${endTime}
+                        </div>
+                    </div>
+                `;
             });
             
-            // Removed the third chart to avoid overlap issues
+            html += '</div>';
+            
+            // Add summary statistics
+            const totalDuration = sortedData.reduce((sum, item) => sum + item.duration, 0);
+            const onDuration = sortedData.filter(item => item.state !== 0).reduce((sum, item) => sum + item.duration, 0);
+            const offDuration = sortedData.filter(item => item.state === 0).reduce((sum, item) => sum + item.duration, 0);
+            
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const onMinutes = Math.floor(onDuration / 60);
+            const offMinutes = Math.floor(offDuration / 60);
+            
+            html += `
+                <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 6px;">
+                    <h4 style="font-size: 14px; margin-bottom: 10px; color: #1e293b;">Summary</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 12px;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: 600; color: #1e293b;">Total Time</div>
+                            <div style="color: #64748b;">${totalMinutes} minutes</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: 600; color: #22c55e;">ON Time</div>
+                            <div style="color: #64748b;">${onMinutes} minutes</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: 600; color: #6b7280;">OFF Time</div>
+                            <div style="color: #64748b;">${offMinutes} minutes</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
         }
 
         // Populate timeline table
@@ -387,6 +358,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-15 10:40:07 -->
+<!-- Updated: 2025-08-15 10:45:35 -->
 </body>
 </html>
