@@ -1,11 +1,76 @@
 {
   "location": {
     "device_id": "11293651",
-    "lat": 52.12838,
-    "lon": -104.51879,
-    "timestamp": "2025-08-15T01:02:39",
-    "unix_time": 1755241357
+    "lat": 0.0,
+    "lon": 0.0,
+    "timestamp": "2025-08-15T12:23:11",
+    "unix_time": 1755282189
   },
-  "timeline": [],
-  "generated_at": "2025-08-15T12:20:20.497138"
+  "timeline": [
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 0,
+      "start_time": 1755282646,
+      "end_time": 1755282646,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 40,
+      "start_time": 1755282646,
+      "end_time": 1755282686,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 48,
+      "start_time": 1755282686,
+      "end_time": 1755282734,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 41,
+      "start_time": 1755282734,
+      "end_time": 1755282775,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 65,
+      "start_time": 1755282775,
+      "end_time": 1755282840,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 51,
+      "start_time": 1755282840,
+      "end_time": 1755282891,
+      "device": "nRF_03"
+    },
+    {
+      "state": 4,
+      "state_label": "ON",
+      "duration": 42,
+      "start_time": 1755282891,
+      "end_time": 1755282933,
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "OFF",
+      "duration": 13,
+      "start_time": 1755282933,
+      "end_time": 1755282946,
+      "device": "nRF_03"
+    }
+  ],
+  "generated_at": "2025-08-15T12:38:15.558963"
 }
