@@ -1,100 +1,100 @@
 {
   "location": {
     "device_id": "11293651",
-    "lat": 52.1286,
-    "lon": -104.51866,
-    "timestamp": "2025-08-15T00:57:31",
-    "unix_time": 1755241049
+    "lat": 52.12838,
+    "lon": -104.51879,
+    "timestamp": "2025-08-15T01:02:39",
+    "unix_time": 1755241357
   },
   "timeline": [
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 0,
-      "start_time": "2025-08-15T06:32:29",
-      "end_time": "2025-08-15T06:32:29",
+      "start_time": 1755239549,
+      "end_time": 1755239549,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 848,
-      "start_time": "2025-08-15T06:32:29",
-      "end_time": "2025-08-15T06:46:37",
+      "start_time": 1755239549,
+      "end_time": 1755240397,
       "device": "nRF_01"
     },
     {
       "state": 4,
       "state_label": "Motion",
       "duration": 120,
-      "start_time": "2025-08-15T06:46:37",
-      "end_time": "2025-08-15T06:48:37",
+      "start_time": 1755240397,
+      "end_time": 1755240517,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 65,
-      "start_time": "2025-08-15T06:48:37",
-      "end_time": "2025-08-15T06:49:42",
+      "start_time": 1755240517,
+      "end_time": 1755240582,
       "device": "nRF_01"
     },
     {
       "state": 4,
       "state_label": "Motion",
       "duration": 8,
-      "start_time": "2025-08-15T06:49:42",
-      "end_time": "2025-08-15T06:49:50",
+      "start_time": 1755240582,
+      "end_time": 1755240590,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 161,
-      "start_time": "2025-08-15T06:49:50",
-      "end_time": "2025-08-15T06:52:31",
+      "start_time": 1755240590,
+      "end_time": 1755240751,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 1009,
-      "start_time": "2025-08-15T06:52:31",
-      "end_time": "2025-08-15T07:09:20",
+      "start_time": 1755240751,
+      "end_time": 1755241760,
       "device": "nRF_01"
     },
     {
       "state": 4,
       "state_label": "Motion",
       "duration": 104,
-      "start_time": "2025-08-15T07:09:20",
-      "end_time": "2025-08-15T07:11:04",
+      "start_time": 1755241760,
+      "end_time": 1755241864,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 328,
-      "start_time": "2025-08-15T07:11:04",
-      "end_time": "2025-08-15T07:16:32",
+      "start_time": 1755241864,
+      "end_time": 1755242192,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 0,
-      "start_time": "2025-08-15T06:39:13",
-      "end_time": "2025-08-15T06:39:13",
+      "start_time": 1755239953,
+      "end_time": 1755239953,
       "device": "nRF_01"
     },
     {
       "state": 0,
       "state_label": "Idle",
       "duration": 1200,
-      "start_time": "2025-08-15T06:39:13",
-      "end_time": "2025-08-15T06:59:13",
+      "start_time": 1755239953,
+      "end_time": 1755241153,
       "device": "nRF_01"
     }
   ],
-  "generated_at": "2025-08-15T00:59:58.443678"
+  "generated_at": "2025-08-15T10:13:32.541898"
 }
