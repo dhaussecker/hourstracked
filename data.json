@@ -1,11 +1,36 @@
 {
   "location": {
     "device_id": "11293651",
-    "lat": 52.12831,
-    "lon": -104.51867,
-    "timestamp": "2025-08-14T21:12:38",
-    "unix_time": 1755227557
+    "lat": 52.12832,
+    "lon": -104.51881,
+    "timestamp": "2025-08-14T21:36:43",
+    "unix_time": 1755229002
   },
-  "timeline": [],
-  "generated_at": "2025-08-14T21:17:30.177290"
+  "timeline": [
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 2400,
+      "start_time": "1970-01-01T00:00:00",
+      "end_time": "1970-01-01T00:40:00",
+      "device": "nRF_02"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 2400,
+      "start_time": "1970-01-01T00:00:00",
+      "end_time": "1970-01-01T00:40:00",
+      "device": "nRF_03"
+    },
+    {
+      "state": 0,
+      "state_label": "Idle",
+      "duration": 2400,
+      "start_time": "1970-01-01T00:00:00",
+      "end_time": "1970-01-01T00:40:00",
+      "device": "nRF_01"
+    }
+  ],
+  "generated_at": "2025-08-14T21:37:06.100990"
 }
