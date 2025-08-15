@@ -4,122 +4,122 @@
       "id": "11293651",
       "type": "Generator",
       "brand": "United Rentals",
-      "hours_used": 41,
+      "hours_used": 78,
       "hours_total": 100,
       "active": true,
-      "status": "Idle",
-      "lat": 52.13594223963166,
-      "lon": -104.52465605091015,
-      "last_seen": "2025-08-15T14:55:24.237475"
+      "status": "Motion",
+      "lat": 52.12671484495868,
+      "lon": -104.52639156664267,
+      "last_seen": "2025-08-15T14:54:25.152454"
     },
     {
       "id": "11294782",
       "type": "Compressor",
       "brand": "United Rentals",
-      "hours_used": 21,
+      "hours_used": 67,
       "hours_total": 100,
       "active": true,
       "status": "Active",
-      "lat": 52.13672906938234,
-      "lon": -104.51307310721052,
-      "last_seen": "2025-08-15T15:09:24.237475"
+      "lat": 52.12864409008673,
+      "lon": -104.51720151016116,
+      "last_seen": "2025-08-15T14:58:25.152454"
     },
     {
       "id": "11295433",
       "type": "Light Tower",
       "brand": "United Rentals",
-      "hours_used": 18,
+      "hours_used": 27,
       "hours_total": 100,
       "active": false,
       "status": "Offline",
       "lat": null,
       "lon": null,
-      "last_seen": "2025-08-14T15:21:24.237475"
+      "last_seen": "2025-08-14T08:23:25.152454"
     },
     {
       "id": "11296124",
       "type": "Excavator",
       "brand": "Caterpillar",
-      "hours_used": 60,
+      "hours_used": 48,
       "hours_total": 100,
       "active": true,
-      "status": "Active",
-      "lat": 52.13466666142245,
-      "lon": -104.52040815017938,
-      "last_seen": "2025-08-15T15:16:24.237475"
+      "status": "Motion",
+      "lat": 52.1293640453878,
+      "lon": -104.51867858818215,
+      "last_seen": "2025-08-15T15:06:25.152454"
     },
     {
       "id": "11297856",
       "type": "Skid Steer",
       "brand": "Bobcat",
-      "hours_used": 22,
+      "hours_used": 40,
       "hours_total": 100,
       "active": true,
-      "status": "Active",
-      "lat": 52.13022706576505,
-      "lon": -104.51861091027376,
-      "last_seen": "2025-08-15T15:10:24.237475"
+      "status": "Idle",
+      "lat": 52.13426358185816,
+      "lon": -104.51253553405981,
+      "last_seen": "2025-08-15T15:22:25.152454"
     },
     {
       "id": "11298567",
       "type": "Forklift",
       "brand": "Toyota",
-      "hours_used": 31,
+      "hours_used": 61,
       "hours_total": 100,
       "active": true,
-      "status": "Active",
-      "lat": 52.13711258520463,
-      "lon": -104.51470604652026,
-      "last_seen": "2025-08-15T14:59:24.237475"
+      "status": "Idle",
+      "lat": 52.13003324491335,
+      "lon": -104.50906944805341,
+      "last_seen": "2025-08-15T15:15:25.152454"
     },
     {
       "id": "11299348",
       "type": "Crane",
       "brand": "Liebherr",
-      "hours_used": 8,
+      "hours_used": 38,
       "hours_total": 100,
       "active": false,
       "status": "Offline",
       "lat": null,
       "lon": null,
-      "last_seen": "2025-08-13T18:21:24.237475"
+      "last_seen": "2025-08-14T03:23:25.152454"
     },
     {
       "id": "11300129",
       "type": "Bulldozer",
       "brand": "Caterpillar",
-      "hours_used": 34,
+      "hours_used": 23,
       "hours_total": 100,
       "active": true,
-      "status": "Idle",
-      "lat": 52.118494568866595,
-      "lon": -104.51995017784738,
-      "last_seen": "2025-08-15T15:15:24.237475"
+      "status": "Active",
+      "lat": 52.12988195326183,
+      "lon": -104.51045514636093,
+      "last_seen": "2025-08-15T14:58:25.152454"
     },
     {
       "id": "11301045",
       "type": "Dump Truck",
       "brand": "Volvo",
-      "hours_used": 50,
+      "hours_used": 22,
       "hours_total": 100,
       "active": true,
       "status": "Active",
-      "lat": 52.13469269583492,
-      "lon": -104.51380467238698,
-      "last_seen": "2025-08-15T15:09:24.237475"
+      "lat": 52.12446452263941,
+      "lon": -104.51907474221464,
+      "last_seen": "2025-08-15T15:12:25.152454"
     },
     {
       "id": "11302678",
       "type": "Welder",
       "brand": "Lincoln",
-      "hours_used": 95,
+      "hours_used": 71,
       "hours_total": 100,
       "active": true,
       "status": "Motion",
-      "lat": 52.13265448905671,
-      "lon": -104.5241459150555,
-      "last_seen": "2025-08-15T14:57:24.237475"
+      "lat": 52.122772963565026,
+      "lon": -104.51726653804624,
+      "last_seen": "2025-08-15T15:17:25.152454"
     }
   ],
-  "generated_at": "2025-08-15T15:21:24.238475"
+  "generated_at": "2025-08-15T15:23:25.153454"
 }
