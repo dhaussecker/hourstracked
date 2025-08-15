@@ -77,19 +77,29 @@
         .timeline-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .timeline-table th {
             background: #f8fafc;
-            padding: 12px;
+            padding: 15px 12px;
             text-align: left;
             border-bottom: 2px solid #e2e8f0;
             font-weight: 600;
+            color: #374151;
         }
 
         .timeline-table td {
             padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .timeline-table tr:hover {
+            background: #f8fafc;
         }
 
         .state-bar {
@@ -234,14 +244,107 @@
                 8: { color: '#22c55e', label: 'ON' }
             };
 
-            // Sort timeline data by start time
-            const sortedData = [...timelineData].sort((a, b) => 
+            // Filter and sort timeline data
+            const validData = timelineData.filter(item => item.duration > 0);
+            const sortedData = [...validData].sort((a, b) => 
                 parseTimestamp(a.start_time) - parseTimestamp(b.start_time)
             );
 
-            // Create HTML for timeline bars
-            let html = '<div style="display: flex; flex-direction: column; gap: 5px;">';
+            if (sortedData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #64748b; padding: 40px;">No timeline data available</p>';
+                return;
+            }
+
+            // Calculate totals for summary
+            const totalDuration = sortedData.reduce((sum, item) => sum + item.duration, 0);
+            const onDuration = sortedData.filter(item => item.state !== 0).reduce((sum, item) => sum + item.duration, 0);
+            const offDuration = sortedData.filter(item => item.state === 0).reduce((sum, item) => sum + item.duration, 0);
+            const utilization = totalDuration > 0 ? ((onDuration / totalDuration) * 100).toFixed(1) : 0;
             
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const onMinutes = Math.floor(onDuration / 60);
+            const offMinutes = Math.floor(offDuration / 60);
+
+            // Get start and end times for labels
+            const startTime = toCentralTimeOnly(sortedData[0].start_time);
+            const endTime = toCentralTimeOnly(sortedData[sortedData.length - 1].end_time);
+
+            // Create horizontal timeline bar
+            let html = `
+                <div style="margin-bottom: 30px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #1e293b;">Continuous Timeline View</h3>
+                    
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #64748b; font-family: 'Monaco', 'Menlo', monospace; margin-bottom: 10px;">
+                        <span>${startTime} CST</span>
+                        <span>${endTime} CST</span>
+                    </div>
+                    
+                    <div style="position: relative; height: 40px; background: #f1f5f9; border-radius: 8px; overflow: hidden;">
+            `;
+
+            // Add segments to horizontal timeline
+            let currentPosition = 0;
+            sortedData.forEach((item, index) => {
+                const widthPercent = (item.duration / totalDuration) * 100;
+                const config = stateConfig[item.state];
+                const itemStartTime = toCentralTimeOnly(item.start_time);
+                const itemEndTime = toCentralTimeOnly(item.end_time);
+                const minutes = Math.floor(item.duration / 60);
+                const seconds = item.duration % 60;
+                const durationText = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+                
+                html += `
+                    <div style="
+                        position: absolute;
+                        left: ${currentPosition}%;
+                        width: ${widthPercent}%;
+                        top: 0;
+                        height: 100%;
+                        background: ${config.color};
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    " 
+                    onmouseover="this.style.transform='scaleY(1.1)'; this.style.zIndex='10'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.2)';"
+                    onmouseout="this.style.transform=''; this.style.zIndex=''; this.style.boxShadow='';"
+                    title="${config.label} for ${durationText} (${itemStartTime} - ${itemEndTime})">
+                    </div>
+                `;
+                
+                currentPosition += widthPercent;
+            });
+
+            html += `
+                    </div>
+                    <div style="text-align: center; font-size: 14px; color: #64748b; margin-top: 10px;">Time</div>
+                </div>
+            `;
+
+            // Add summary grid
+            html += `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 25px 0; padding: 20px; background: #f8fafc; border-radius: 8px;">
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #3b82f6;">${totalMinutes} min</div>
+                        <div style="font-size: 14px; color: #64748b; font-weight: 500;">Total Time</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #22c55e;">${onMinutes} min</div>
+                        <div style="font-size: 14px; color: #64748b; font-weight: 500;">ON Time</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #6b7280;">${offMinutes} min</div>
+                        <div style="font-size: 14px; color: #64748b; font-weight: 500;">OFF Time</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #22c55e;">${utilization}%</div>
+                        <div style="font-size: 14px; color: #64748b; font-weight: 500;">Utilization</div>
+                    </div>
+                </div>
+            `;
+
+            // Add individual timeline bars
+            const maxDuration = Math.max(...sortedData.map(d => d.duration));
+            
+            html += '<div style="margin-top: 25px;">';
             sortedData.forEach((item, index) => {
                 const startTime = toCentralTimeOnly(item.start_time);
                 const endTime = toCentralTimeOnly(item.end_time);
@@ -250,70 +353,42 @@
                 const seconds = duration % 60;
                 const durationText = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
                 const config = stateConfig[item.state];
-                
-                // Calculate bar width based on duration (max 100%)
-                const maxDuration = Math.max(...sortedData.map(d => d.duration));
-                const widthPercent = (duration / maxDuration) * 100;
+                const widthPercent = Math.max(20, (duration / maxDuration) * 100);
                 
                 html += `
-                    <div style="display: flex; align-items: center; gap: 10px; padding: 5px;">
-                        <div style="min-width: 80px; font-size: 12px; color: #64748b;">
+                    <div style="display: flex; align-items: center; margin-bottom: 8px; min-height: 40px;">
+                        <div style="min-width: 80px; font-size: 12px; color: #64748b; font-family: 'Monaco', 'Menlo', monospace;">
                             ${startTime}
                         </div>
-                        <div style="flex: 1; position: relative;">
+                        <div style="flex: 1; margin: 0 15px; position: relative; height: 32px;">
                             <div style="
                                 width: ${widthPercent}%;
-                                height: 30px;
+                                height: 100%;
                                 background: ${config.color};
-                                border-radius: 4px;
+                                border-radius: 6px;
                                 display: flex;
                                 align-items: center;
-                                padding: 0 10px;
+                                padding: 0 12px;
                                 color: white;
                                 font-size: 12px;
                                 font-weight: 600;
-                                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                            ">
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                transition: all 0.2s ease;
+                                cursor: pointer;
+                            "
+                            onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)';"
+                            onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';"
+                            title="${config.label} for ${durationText}">
                                 ${config.label} - ${durationText}
                             </div>
                         </div>
-                        <div style="min-width: 80px; font-size: 12px; color: #64748b; text-align: right;">
+                        <div style="min-width: 80px; font-size: 12px; color: #64748b; text-align: right; font-family: 'Monaco', 'Menlo', monospace;">
                             ${endTime}
                         </div>
                     </div>
                 `;
             });
-            
             html += '</div>';
-            
-            // Add summary statistics
-            const totalDuration = sortedData.reduce((sum, item) => sum + item.duration, 0);
-            const onDuration = sortedData.filter(item => item.state !== 0).reduce((sum, item) => sum + item.duration, 0);
-            const offDuration = sortedData.filter(item => item.state === 0).reduce((sum, item) => sum + item.duration, 0);
-            
-            const totalMinutes = Math.floor(totalDuration / 60);
-            const onMinutes = Math.floor(onDuration / 60);
-            const offMinutes = Math.floor(offDuration / 60);
-            
-            html += `
-                <div style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 6px;">
-                    <h4 style="font-size: 14px; margin-bottom: 10px; color: #1e293b;">Summary</h4>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 12px;">
-                        <div style="text-align: center;">
-                            <div style="font-weight: 600; color: #1e293b;">Total Time</div>
-                            <div style="color: #64748b;">${totalMinutes} minutes</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: 600; color: #22c55e;">ON Time</div>
-                            <div style="color: #64748b;">${onMinutes} minutes</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-weight: 600; color: #6b7280;">OFF Time</div>
-                            <div style="color: #64748b;">${offMinutes} minutes</div>
-                        </div>
-                    </div>
-                </div>
-            `;
             
             container.innerHTML = html;
         }
@@ -323,11 +398,16 @@
             const tbody = document.getElementById('timelineTableBody');
             tbody.innerHTML = '';
 
-            timelineData.forEach(item => {
+            // Filter out zero-duration entries
+            const validData = timelineData.filter(item => item.duration > 0);
+
+            validData.forEach(item => {
+                if (item.duration === 0) return; // Skip zero-duration entries
+                
                 const row = document.createElement('tr');
-
-                let stateClass = item.state_label === 'OFF' ? 'state-off' : 'state-on';
-
+                const stateClass = item.state === 0 ? 'state-off' : 'state-on';
+                const stateName = item.state === 0 ? 'OFF' : 'ON';
+                
                 const duration = item.duration;
                 const minutes = Math.floor(duration / 60);
                 const seconds = duration % 60;
@@ -337,15 +417,34 @@
                 const endTime = toCentralTimeOnly(item.end_time) + ' CST';
 
                 row.innerHTML = `
-                    <td><strong>${item.state_label}</strong></td>
-                    <td>${durationText}</td>
                     <td>
-                        <div class="state-bar ${stateClass}" style="width: 100px;">
-                            ${durationText}
-                        </div>
+                        <span style="
+                            display: inline-block;
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            font-weight: 600;
+                            color: white;
+                            background: ${item.state === 0 ? '#6b7280' : '#22c55e'};
+                        ">${stateName}</span>
                     </td>
+                    <td style="font-family: 'Monaco', 'Menlo', monospace; font-size: 13px; color: #374151;">${durationText}</td>
                     <td>${startTime}</td>
                     <td>${endTime}</td>
+                    <td>
+                        <div style="
+                            width: 60px; 
+                            height: 20px; 
+                            background: ${item.state === 0 ? '#6b7280' : '#22c55e'}; 
+                            border-radius: 4px; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            color: white; 
+                            font-size: 10px; 
+                            font-weight: 600;
+                        ">${durationText}</div>
+                    </td>
                 `;
 
                 tbody.appendChild(row);
@@ -358,6 +457,6 @@
             populateTimelineTable();
         });
     </script>
-<!-- Updated: 2025-08-15 10:45:35 -->
+<!-- Updated: 2025-08-15 11:02:08 -->
 </body>
 </html>
