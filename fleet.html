@@ -176,6 +176,24 @@
             font-size: 24px;
             font-weight: 700;
         }
+        
+        .hours-input {
+            width: 60px;
+            font-size: 22px;
+            font-weight: 700;
+            border: 2px solid #c4d82d;
+            border-radius: 4px;
+            padding: 2px 5px;
+            text-align: center;
+            background: white;
+            color: #22c55e;
+        }
+        
+        .hours-input:focus {
+            outline: none;
+            border-color: #a3c020;
+            box-shadow: 0 0 0 3px rgba(196, 216, 45, 0.2);
+        }
 
         .hours-percentage {
             font-size: 14px;
@@ -345,15 +363,15 @@
                 <div class="card-body">
                     <div class="hours-display">
                         <span class="hours-text" style="color: #22c55e;">
-                            10/100h
+                            <input type="number" class="hours-input" id="hours-input-1" value="10" min="0" max="100" onchange="updateProgress(1)">/100h
                         </span>
-                        <span class="hours-percentage">
+                        <span class="hours-percentage" id="hours-percentage-1">
                             10%
                         </span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 10.0%; background-color: #22c55e;"></div>
+                        <div class="progress-fill" id="progress-fill-1" style="width: 10.0%; background-color: #22c55e;"></div>
                     </div>
 
                     <div class="equipment-details">
@@ -383,8 +401,8 @@
                 </div>
 
                 <div class="action-area">
-                    <button class="view-details-btn" onclick="window.open('index.html', '_blank')" >
-                        VIEW LOCATION & TIMELINE
+                    <button class="view-details-btn" onclick="window.location.href='details1.html'" >
+                        View Timeline
                     </button>
                 </div>
             </div>
@@ -401,10 +419,10 @@
                 <div class="card-body">
                     <div class="hours-display">
                         <span class="hours-text" style="color: #22c55e;">
-                            26/100h
+                            10/100h
                         </span>
                         <span class="hours-percentage">
-                            26%
+                            10%
                         </span>
                     </div>
 
@@ -907,13 +925,53 @@
             window.location.reload();
         }, 300000);
 
-        // Add click handler for equipment cards
-        document.querySelectorAll('.equipment-card.clickable').forEach(card => {
-            card.addEventListener('click', function() {
-                window.open('index.html', '_blank');
-            });
+        // Function to update progress bar and percentage when hours change
+        function updateProgress(cardId) {
+            const input = document.getElementById('hours-input-' + cardId);
+            const percentage = document.getElementById('hours-percentage-' + cardId);
+            const progressFill = document.getElementById('progress-fill-' + cardId);
+            
+            let hours = parseInt(input.value) || 0;
+            
+            // Ensure hours stay within bounds
+            if (hours < 0) hours = 0;
+            if (hours > 100) hours = 100;
+            input.value = hours;
+            
+            // Update percentage display
+            percentage.textContent = hours + '%';
+            
+            // Update progress bar width
+            progressFill.style.width = hours + '%';
+            
+            // Update progress bar color based on utilization
+            if (hours >= 80) {
+                progressFill.style.backgroundColor = '#ef4444'; // Red for high usage
+                input.style.color = '#ef4444';
+            } else if (hours >= 50) {
+                progressFill.style.backgroundColor = '#f59e0b'; // Orange for medium usage
+                input.style.color = '#f59e0b';
+            } else {
+                progressFill.style.backgroundColor = '#22c55e'; // Green for low usage
+                input.style.color = '#22c55e';
+            }
+            
+            // Save to localStorage for persistence
+            localStorage.setItem('equipment-hours-' + cardId, hours);
+        }
+        
+        // Load saved hours on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedHours = localStorage.getItem('equipment-hours-1');
+            if (savedHours !== null) {
+                document.getElementById('hours-input-1').value = savedHours;
+                updateProgress(1);
+            }
         });
+        
+        // Remove the old click handler since we now have a button
+        // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 16:03:10 -->
+<!-- Updated: 2025-08-16 16:27:58 -->
 </body>
 </html>
