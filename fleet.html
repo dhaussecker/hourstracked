@@ -941,53 +941,84 @@
             window.location.reload();
         }, 300000);
 
-        // Function to update progress bar and percentage when hours change
+        // Function to update progress bar and percentage when target hours change
         function updateProgress(cardId) {
-            const input = document.getElementById('hours-input-' + cardId);
+            const targetInput = document.getElementById('target-hours-' + cardId);
             const percentage = document.getElementById('hours-percentage-' + cardId);
             const progressFill = document.getElementById('progress-fill-' + cardId);
+            const hoursDisplay = document.getElementById('hours-display-' + cardId);
             
-            let hours = parseInt(input.value) || 0;
+            const actualHours = 10; // This comes from your data - dashboard_updater.py sets this
+            let targetHours = parseInt(targetInput.value) || 100;
             
-            // Ensure hours stay within bounds
-            if (hours < 0) hours = 0;
-            if (hours > 100) hours = 100;
-            input.value = hours;
+            // Ensure target hours stay within bounds
+            if (targetHours < 1) targetHours = 1;
+            if (targetHours > 999) targetHours = 999;
+            targetInput.value = targetHours;
+            
+            // Calculate percentage based on actual/target
+            const percentageValue = Math.round((actualHours / targetHours) * 100);
             
             // Update percentage display
-            percentage.textContent = hours + '%';
+            percentage.textContent = percentageValue + '%';
             
             // Update progress bar width
-            progressFill.style.width = hours + '%';
+            progressFill.style.width = Math.min(percentageValue, 100) + '%';
             
             // Update progress bar color based on utilization
-            if (hours >= 80) {
+            if (percentageValue >= 90) {
                 progressFill.style.backgroundColor = '#ef4444'; // Red for high usage
-                input.style.color = '#ef4444';
-            } else if (hours >= 50) {
+                hoursDisplay.style.color = '#ef4444';
+            } else if (percentageValue >= 75) {
                 progressFill.style.backgroundColor = '#f59e0b'; // Orange for medium usage
-                input.style.color = '#f59e0b';
+                hoursDisplay.style.color = '#f59e0b';
             } else {
                 progressFill.style.backgroundColor = '#22c55e'; // Green for low usage
-                input.style.color = '#22c55e';
+                hoursDisplay.style.color = '#22c55e';
             }
             
             // Save to localStorage for persistence
-            localStorage.setItem('equipment-hours-' + cardId, hours);
+            localStorage.setItem('equipment-target-hours-' + cardId, targetHours);
         }
         
-        // Load saved hours on page load
+        // Load saved values on page load
         window.addEventListener('DOMContentLoaded', function() {
-            const savedHours = localStorage.getItem('equipment-hours-1');
-            if (savedHours !== null) {
-                document.getElementById('hours-input-1').value = savedHours;
+            // Load saved target hours
+            const savedTarget = localStorage.getItem('equipment-target-hours-1');
+            if (savedTarget !== null) {
+                document.getElementById('target-hours-1').value = savedTarget;
                 updateProgress(1);
             }
+            
+            // Load saved equipment name
+            const savedName = localStorage.getItem('equipment-name-1');
+            if (savedName !== null) {
+                document.getElementById('equipment-name-1').textContent = savedName;
+            }
+            
+            // Load saved equipment type
+            const savedType = localStorage.getItem('equipment-type-1');
+            if (savedType !== null) {
+                document.getElementById('equipment-type-1').textContent = savedType;
+            }
+            
+            // Load saved brand
+            const savedBrand = localStorage.getItem('equipment-brand-1');
+            if (savedBrand !== null) {
+                document.getElementById('equipment-brand-1').textContent = savedBrand;
+            }
+            
+            // Make editable fields save on change
+            document.querySelectorAll('.editable-text').forEach(element => {
+                element.addEventListener('blur', function() {
+                    localStorage.setItem(this.id, this.textContent);
+                });
+            });
         });
         
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 16:38:32 -->
+<!-- Updated: 2025-08-16 16:43:39 -->
 </body>
 </html>
