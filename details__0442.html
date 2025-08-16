@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipment Details - 11293651</title>
+    <title>Equipment Details - _0442</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -141,12 +141,12 @@
 <body>
     <div class="header">
         <div class="container">
-            <a href="index.html" class="back-btn">← Back to Location</a>
+            <a href="fleet.html" class="back-btn">← Back to Fleet</a>
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
                 <img src="taulab.png" alt="TauLab" style="height: 70px; width: auto; filter: brightness(1.1);">
                 <div>
                     <h1>TauLab Equipment Timeline</h1>
-                    <p>Generator 11293651 - Advanced Analytics Dashboard (CST/CDT)</p>
+                    <p>_0442 - Advanced Analytics Dashboard (CST/CDT)</p>
                 </div>
             </div>
         </div>
@@ -194,7 +194,7 @@
     </div>
 
     <script>
-        const timelineData = [{"state": 4, "state_label": "ON", "duration": 0, "start_time": 1755292049, "end_time": 1755292049}, {"state": 4, "state_label": "ON", "duration": 20, "start_time": 1755292049, "end_time": 1755292069}, {"state": 4, "state_label": "ON", "duration": 21, "start_time": 1755292069, "end_time": 1755292090}, {"state": 0, "state_label": "OFF", "duration": 1, "start_time": 1755292090, "end_time": 1755292091}, {"state": 4, "state_label": "ON", "duration": 1, "start_time": 1755292091, "end_time": 1755292092}, {"state": 0, "state_label": "OFF", "duration": 44, "start_time": 1755292092, "end_time": 1755292136}, {"state": 4, "state_label": "ON", "duration": 24, "start_time": 1755292136, "end_time": 1755292160}, {"state": 0, "state_label": "OFF", "duration": 2, "start_time": 1755292160, "end_time": 1755292162}, {"state": 4, "state_label": "ON", "duration": 1, "start_time": 1755292162, "end_time": 1755292163}, {"state": 0, "state_label": "OFF", "duration": 1, "start_time": 1755292163, "end_time": 1755292164}, {"state": 0, "state_label": "OFF", "duration": 3, "start_time": 1755292164, "end_time": 1755292167}, {"state": 4, "state_label": "ON", "duration": 2, "start_time": 1755292167, "end_time": 1755292169}, {"state": 0, "state_label": "OFF", "duration": 144, "start_time": 1755292169, "end_time": 1755292313}, {"state": 4, "state_label": "ON", "duration": 37, "start_time": 1755292313, "end_time": 1755292350}, {"state": 4, "state_label": "ON", "duration": 94, "start_time": 1755292350, "end_time": 1755292444}, {"state": 0, "state_label": "OFF", "duration": 93, "start_time": 1755292444, "end_time": 1755292537}, {"state": 4, "state_label": "ON", "duration": 24000, "start_time": 1755292537, "end_time": 1755292628}, {"state": 0, "state_label": "OFF", "duration": 52, "start_time": 1755292628, "end_time": 1755292680}];
+        const timelineData = [{"state": 8, "state_label": "ON", "duration": 2, "start_time": 1754428777.0, "end_time": 1754428779.0}, {"state": 0, "state_label": "OFF", "duration": 2, "start_time": 1754428779.0, "end_time": 1754428781.0}];
 
         // Function to convert timestamp to date
         function parseTimestamp(timestamp) {
@@ -263,9 +263,19 @@
             const offDuration = sortedData.filter(item => item.state === 0).reduce((sum, item) => sum + item.duration, 0);
             const utilization = totalDuration > 0 ? ((onDuration / totalDuration) * 100).toFixed(1) : 0;
             
-            const totalMinutes = Math.floor(totalDuration / 60);
-            const onMinutes = Math.floor(onDuration / 60);
-            const offMinutes = Math.floor(offDuration / 60);
+            // Format time display - show seconds if less than 60, otherwise minutes
+            const formatTimeDisplay = (seconds) => {
+                if (seconds < 60) {
+                    return `${seconds}s`;
+                } else {
+                    const mins = Math.floor(seconds / 60);
+                    return `${mins}m`;
+                }
+            };
+            
+            const totalDisplay = formatTimeDisplay(totalDuration);
+            const onDisplay = formatTimeDisplay(onDuration);
+            const offDisplay = formatTimeDisplay(offDuration);
 
             // Get start and end times for labels
             const startTime = toCentralTimeOnly(sortedData[0].start_time);
@@ -325,15 +335,15 @@
             html += `
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 25px 0; padding: 20px; background: #f8fafc; border-radius: 8px;">
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
-                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #3b82f6;">${totalMinutes} min</div>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #3b82f6;">${totalDisplay}</div>
                         <div style="font-size: 14px; color: #64748b; font-weight: 500;">Total Time</div>
                     </div>
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
-                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #22c55e;">${onMinutes} min</div>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #22c55e;">${onDisplay}</div>
                         <div style="font-size: 14px; color: #64748b; font-weight: 500;">ON Time</div>
                     </div>
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
-                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #6b7280;">${offMinutes} min</div>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #6b7280;">${offDisplay}</div>
                         <div style="font-size: 14px; color: #64748b; font-weight: 500;">OFF Time</div>
                     </div>
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
