@@ -656,8 +656,8 @@
                 let buttonContent = '';
                 if (isClickable) {
                     buttonContent = `
-                        <a href="index.html" class="view-details-btn">
-                            VIEW LOCATION & TIMELINE
+                        <a href="details.html" class="view-details-btn">
+                            VIEW TIMELINE
                         </a>
                     `;
                 } else {
@@ -810,7 +810,7 @@
                 
                 // Make clickable to open full map
                 mapElement.style.cursor = 'pointer';
-                mapElement.onclick = () => window.location.href = 'index.html';
+                mapElement.onclick = () => window.location.href = 'map.html';
                 
             } catch (error) {
                 console.log('Mini map initialization failed:', error);
@@ -985,6 +985,6 @@
         // Initialize
         init();
     </script>
-<!-- Updated: 2025-08-16 13:00:59 -->
+<!-- Updated: 2025-08-16 13:07:40 -->
 </body>
 </html>
