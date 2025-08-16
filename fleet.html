@@ -559,7 +559,9 @@
         <button class="edit-btn edit-btn-export" onclick="exportData()">Export Data</button>
         <button class="edit-btn edit-btn-import" onclick="importData()">Import Data</button>
         <input type="file" id="importFile" style="display: none;" accept=".json" onchange="handleImport(event)">
-    </div>
+        <button class="edit-btn" onclick="refreshCalculatedData()" style="background: #dc2626; color: white;" title="Refresh data from timeline calculations">
+            🔄 Refresh Data
+        </button></div>
 
     <script>
         // Check for edit mode
@@ -576,13 +578,14 @@
                 document.body.classList.add('edit-mode');
             }
             
-            // Load from localStorage or use default
-            const savedData = localStorage.getItem('fleetData');
-            if (savedData) {
-                equipmentData = JSON.parse(savedData);
-            } else {
-                equipmentData = [{"id": "11293651", "type": "Generator", "brand": "tacotime", "company": "TauLab", "hours_used": 0, "hours_total": 100, "active": true, "lat": 52.1284, "lon": -104.5188, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11294782", "type": "Compressor", "brand": "United Rentals", "company": "TauLab", "hours_used": 45, "hours_total": 100, "active": true, "lat": 52.129, "lon": -104.5195, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11295433", "type": "Light Tower", "brand": "United Rentals", "company": "TauLab", "hours_used": 30, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-15 12:59"}, {"id": "11296124", "type": "Excavator", "brand": "Caterpillar", "company": "TauLab", "hours_used": 88, "hours_total": 100, "active": true, "lat": 52.1275, "lon": -104.518, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11297856", "type": "Skid Steer", "brand": "Bobcat", "company": "TauLab", "hours_used": 62, "hours_total": 100, "active": true, "lat": 52.1282, "lon": -104.519, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11298567", "type": "Forklift", "brand": "Toyota", "company": "TauLab", "hours_used": 95, "hours_total": 100, "active": true, "lat": 52.1288, "lon": -104.5185, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11299348", "type": "Crane", "brand": "Liebherr", "company": "TauLab", "hours_used": 15, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-14 12:59"}, {"id": "11300129", "type": "Bulldozer", "brand": "Caterpillar", "company": "TauLab", "hours_used": 78, "hours_total": 100, "active": true, "lat": 52.128, "lon": -104.5192, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11301045", "type": "Dump Truck", "brand": "Volvo", "company": "TauLab", "hours_used": 55, "hours_total": 100, "active": true, "lat": 52.1286, "lon": -104.5187, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11302678", "type": "Welder", "brand": "Lincoln", "company": "TauLab", "hours_used": 40, "hours_total": 100, "active": true, "lat": 52.1283, "lon": -104.5189, "status": "Active", "last_seen": "2025-08-16 12:59"}];
-            }
+            // Force refresh with calculated data - clear old localStorage
+            localStorage.removeItem('fleetData'); // Clear old cached data
+            
+            // Use calculated data from timeline
+            equipmentData = [{"id": "11293651", "type": "Generator", "brand": "tacotime", "company": "TauLab", "hours_used": 0, "hours_total": 100, "active": true, "lat": 52.1284, "lon": -104.5188, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11294782", "type": "Compressor", "brand": "United Rentals", "company": "TauLab", "hours_used": 45, "hours_total": 100, "active": true, "lat": 52.129, "lon": -104.5195, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11295433", "type": "Light Tower", "brand": "United Rentals", "company": "TauLab", "hours_used": 30, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-15 12:59"}, {"id": "11296124", "type": "Excavator", "brand": "Caterpillar", "company": "TauLab", "hours_used": 88, "hours_total": 100, "active": true, "lat": 52.1275, "lon": -104.518, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11297856", "type": "Skid Steer", "brand": "Bobcat", "company": "TauLab", "hours_used": 62, "hours_total": 100, "active": true, "lat": 52.1282, "lon": -104.519, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11298567", "type": "Forklift", "brand": "Toyota", "company": "TauLab", "hours_used": 95, "hours_total": 100, "active": true, "lat": 52.1288, "lon": -104.5185, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11299348", "type": "Crane", "brand": "Liebherr", "company": "TauLab", "hours_used": 15, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-14 12:59"}, {"id": "11300129", "type": "Bulldozer", "brand": "Caterpillar", "company": "TauLab", "hours_used": 78, "hours_total": 100, "active": true, "lat": 52.128, "lon": -104.5192, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11301045", "type": "Dump Truck", "brand": "Volvo", "company": "TauLab", "hours_used": 55, "hours_total": 100, "active": true, "lat": 52.1286, "lon": -104.5187, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11302678", "type": "Welder", "brand": "Lincoln", "company": "TauLab", "hours_used": 40, "hours_total": 100, "active": true, "lat": 52.1283, "lon": -104.5189, "status": "Active", "last_seen": "2025-08-16 12:59"}];
+            
+            // Save the new calculated data
+            localStorage.setItem('fleetData', JSON.stringify(equipmentData));
             
             renderEquipment();
         }
@@ -984,7 +987,16 @@
         
         // Initialize
         init();
-    </script>
-<!-- Updated: 2025-08-16 13:22:51 -->
+    
+        function refreshCalculatedData() {
+            // Clear localStorage to force recalculation
+            localStorage.removeItem('fleetData');
+            localStorage.removeItem('fleetDataVersion');
+            
+            // Reload the page to get fresh calculated data
+            window.location.reload();
+        }
+        </script>
+<!-- Updated: 2025-08-16 13:27:06 -->
 </body>
 </html>
