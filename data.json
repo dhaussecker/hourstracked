@@ -138,7 +138,7 @@
     {
       "state": 4,
       "state_label": "ON",
-      "duration": 91,
+      "duration": 240,
       "start_time": 1755292537,
       "end_time": 1755292628,
       "device": "nRF_03"
@@ -152,5 +152,5 @@
       "device": "nRF_03"
     }
   ],
-  "generated_at": "2025-08-15T15:23:28.287400"
+  "generated_at": "2025-08-16T12:56:30.259242"
 }
