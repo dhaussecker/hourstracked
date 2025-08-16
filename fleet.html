@@ -578,6 +578,24 @@
                             <div class="last-seen">
                                 Last seen: ${equipment.last_seen || new Date().toLocaleString()}
                             </div>
+                            <div class="on-time-display" style="margin-top: 15px; padding: 12px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 8px; border: 1px solid #22c55e;">
+                                <div style="text-align: center; margin-bottom: 8px;">
+                                    <div style="font-size: 11px; color: #15803d; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Equipment ON Time</div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <div style="text-align: center; padding: 8px; background: white; border-radius: 6px;">
+                                        <div style="font-size: 16px; font-weight: 700; color: #22c55e;">0h 4m</div>
+                                        <div style="font-size: 10px; color: #64748b;">Total ON Time</div>
+                                    </div>
+                                    <div style="text-align: center; padding: 8px; background: white; border-radius: 6px;">
+                                        <div style="font-size: 16px; font-weight: 700; color: #22c55e;">46.1%</div>
+                                        <div style="font-size: 10px; color: #64748b;">Utilization</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 8px; text-align: center; font-size: 10px; color: #64748b;">
+                                    10 ON periods of 18 total
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="action-area">
@@ -714,6 +732,6 @@
         // Initialize
         init();
     </script>
-<!-- Updated: 2025-08-16 12:38:51 -->
+<!-- Updated: 2025-08-16 12:53:34 -->
 </body>
 </html>
