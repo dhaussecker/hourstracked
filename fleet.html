@@ -194,6 +194,22 @@
             border-color: #a3c020;
             box-shadow: 0 0 0 3px rgba(196, 216, 45, 0.2);
         }
+        
+        .editable-text {
+            border: 1px dashed #c4d82d;
+            border-radius: 4px;
+            padding: 2px 5px;
+            background: white;
+            min-width: 50px;
+            display: inline-block;
+            cursor: text;
+        }
+        
+        .editable-text:focus {
+            outline: none;
+            border-color: #a3c020;
+            border-style: solid;
+        }
 
         .hours-percentage {
             font-size: 14px;
@@ -353,8 +369,8 @@
         <div class="equipment-grid">
             <div class="equipment-card clickable ">
                 <div class="card-header">
-                    <div class="equipment-id">Generator 11293651</div>
-                    <div class="equipment-type">United Rentals</div>
+                    <div class="equipment-id" contenteditable="true" class="editable-text" id="equipment-name-1">Generator 11293651</div>
+                    <div class="equipment-type" contenteditable="true" class="editable-text" id="equipment-type-1">United Rentals</div>
                     <div class="status-badge" style="background-color: #22c55e;">
                         Good
                     </div>
@@ -362,8 +378,8 @@
 
                 <div class="card-body">
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;">
-                            <input type="number" class="hours-input" id="hours-input-1" value="10" min="0" max="100" onchange="updateProgress(1)">/100h
+                        <span class="hours-text" style="color: #22c55e;" id="hours-display-1">
+                            10/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)">h
                         </span>
                         <span class="hours-percentage" id="hours-percentage-1">
                             10%
@@ -381,7 +397,7 @@
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Brand</div>
-                            <div class="detail-value">United Rentals</div>
+                            <div class="detail-value" contenteditable="true" class="editable-text" id="equipment-brand-1">United Rentals</div>
                         </div>
                         
                     <div class="detail-item">
@@ -972,6 +988,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 16:33:26 -->
+<!-- Updated: 2025-08-16 16:38:32 -->
 </body>
 </html>
