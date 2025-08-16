@@ -581,7 +581,7 @@
             if (savedData) {
                 equipmentData = JSON.parse(savedData);
             } else {
-                equipmentData = [{"id": "11293651", "type": "Generator", "brand": "tacotime", "company": "TauLab", "hours_used": 75, "hours_total": 100, "active": true, "lat": 52.1284, "lon": -104.5188, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11294782", "type": "Compressor", "brand": "United Rentals", "company": "TauLab", "hours_used": 45, "hours_total": 100, "active": true, "lat": 52.129, "lon": -104.5195, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11295433", "type": "Light Tower", "brand": "United Rentals", "company": "TauLab", "hours_used": 30, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-15 12:59"}, {"id": "11296124", "type": "Excavator", "brand": "Caterpillar", "company": "TauLab", "hours_used": 88, "hours_total": 100, "active": true, "lat": 52.1275, "lon": -104.518, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11297856", "type": "Skid Steer", "brand": "Bobcat", "company": "TauLab", "hours_used": 62, "hours_total": 100, "active": true, "lat": 52.1282, "lon": -104.519, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11298567", "type": "Forklift", "brand": "Toyota", "company": "TauLab", "hours_used": 95, "hours_total": 100, "active": true, "lat": 52.1288, "lon": -104.5185, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11299348", "type": "Crane", "brand": "Liebherr", "company": "TauLab", "hours_used": 15, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-14 12:59"}, {"id": "11300129", "type": "Bulldozer", "brand": "Caterpillar", "company": "TauLab", "hours_used": 78, "hours_total": 100, "active": true, "lat": 52.128, "lon": -104.5192, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11301045", "type": "Dump Truck", "brand": "Volvo", "company": "TauLab", "hours_used": 55, "hours_total": 100, "active": true, "lat": 52.1286, "lon": -104.5187, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11302678", "type": "Welder", "brand": "Lincoln", "company": "TauLab", "hours_used": 40, "hours_total": 100, "active": true, "lat": 52.1283, "lon": -104.5189, "status": "Active", "last_seen": "2025-08-16 12:59"}];
+                equipmentData = [{"id": "11293651", "type": "Generator", "brand": "tacotime", "company": "TauLab", "hours_used": 0, "hours_total": 100, "active": true, "lat": 52.1284, "lon": -104.5188, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11294782", "type": "Compressor", "brand": "United Rentals", "company": "TauLab", "hours_used": 45, "hours_total": 100, "active": true, "lat": 52.129, "lon": -104.5195, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11295433", "type": "Light Tower", "brand": "United Rentals", "company": "TauLab", "hours_used": 30, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-15 12:59"}, {"id": "11296124", "type": "Excavator", "brand": "Caterpillar", "company": "TauLab", "hours_used": 88, "hours_total": 100, "active": true, "lat": 52.1275, "lon": -104.518, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11297856", "type": "Skid Steer", "brand": "Bobcat", "company": "TauLab", "hours_used": 62, "hours_total": 100, "active": true, "lat": 52.1282, "lon": -104.519, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11298567", "type": "Forklift", "brand": "Toyota", "company": "TauLab", "hours_used": 95, "hours_total": 100, "active": true, "lat": 52.1288, "lon": -104.5185, "status": "Active", "last_seen": "2025-08-16 12:59"}, {"id": "11299348", "type": "Crane", "brand": "Liebherr", "company": "TauLab", "hours_used": 15, "hours_total": 100, "active": false, "lat": null, "lon": null, "status": "Offline", "last_seen": "2025-08-14 12:59"}, {"id": "11300129", "type": "Bulldozer", "brand": "Caterpillar", "company": "TauLab", "hours_used": 78, "hours_total": 100, "active": true, "lat": 52.128, "lon": -104.5192, "status": "Idle", "last_seen": "2025-08-16 12:59"}, {"id": "11301045", "type": "Dump Truck", "brand": "Volvo", "company": "TauLab", "hours_used": 55, "hours_total": 100, "active": true, "lat": 52.1286, "lon": -104.5187, "status": "Motion", "last_seen": "2025-08-16 12:59"}, {"id": "11302678", "type": "Welder", "brand": "Lincoln", "company": "TauLab", "hours_used": 40, "hours_total": 100, "active": true, "lat": 52.1283, "lon": -104.5189, "status": "Active", "last_seen": "2025-08-16 12:59"}];
             }
             
             renderEquipment();
@@ -678,11 +678,11 @@
                             </div>
                             <div class="on-time-grid">
                                 <div class="on-time-item">
-                                    <div class="on-time-value">0h 4m</div>
+                                    <div class="on-time-value">0h 7m</div>
                                     <div class="on-time-label">Total ON Time</div>
                                 </div>
                                 <div class="on-time-item">
-                                    <div class="on-time-value">46.1%</div>
+                                    <div class="on-time-value">56.4%</div>
                                     <div class="on-time-label">Utilization</div>
                                 </div>
                             </div>
@@ -985,6 +985,6 @@
         // Initialize
         init();
     </script>
-<!-- Updated: 2025-08-16 13:07:40 -->
+<!-- Updated: 2025-08-16 13:22:51 -->
 </body>
 </html>
