@@ -948,7 +948,9 @@
             const progressFill = document.getElementById('progress-fill-' + cardId);
             const hoursDisplay = document.getElementById('hours-display-' + cardId);
             
-            const actualHours = 10; // This comes from your data - dashboard_updater.py sets this
+            // Get actual hours from the display (updated by dashboard_updater.py)
+            const actualHoursElement = document.getElementById('hours-display-' + cardId);
+            const actualHours = parseInt(actualHoursElement.textContent.split('/')[0]) || 10;
             let targetHours = parseInt(targetInput.value) || 100;
             
             // Ensure target hours stay within bounds
@@ -987,8 +989,9 @@
             const savedTarget = localStorage.getItem('equipment-target-hours-1');
             if (savedTarget !== null) {
                 document.getElementById('target-hours-1').value = savedTarget;
-                updateProgress(1);
             }
+            // Always update progress on load to reflect current actual hours
+            updateProgress(1);
             
             // Load saved equipment name
             const savedName = localStorage.getItem('equipment-name-1');
@@ -1019,6 +1022,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 17:04:07 -->
+<!-- Updated: 2025-08-16 17:09:14 -->
 </body>
 </html>
