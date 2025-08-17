@@ -425,7 +425,7 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                         <div style="text-align: center;">
                             <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Baseline Hours</div>
-                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" disabled>
+                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="9999" onchange="updateProgress(1)" disabled>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Tracked Hours (IoT)</div>
@@ -447,7 +447,7 @@
                     <!-- Accumulated Hours Display -->
                     <div class="hours-display">
                         <span class="hours-text" id="hours-display-1">
-                            <span id="accumulated-hours-1" style="color: #1e3a5f;">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)" disabled><span style="color: #1e3a5f;">h</span>
+                            <span id="accumulated-hours-1" style="color: #1e3a5f;">10</span><span style="color: #1e3a5f;">/</span><input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="9999" onchange="updateProgress(1)" disabled><span style="color: #1e3a5f;">h</span>
                         </span>
                         <span class="hours-percentage" id="hours-percentage-1">
                             10%
@@ -1082,11 +1082,11 @@
             
             // Ensure values stay within bounds
             if (baselineHours < 0) baselineHours = 0;
-            if (baselineHours > 999) baselineHours = 999;
+            if (baselineHours > 9999) baselineHours = 9999;
             baselineInput.value = baselineHours;
             
             if (targetHours < 1) targetHours = 1;
-            if (targetHours > 999) targetHours = 999;
+            if (targetHours > 9999) targetHours = 9999;
             targetInput.value = targetHours;
             
             // Calculate accumulated hours (baseline + current from IoT)
@@ -1163,6 +1163,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 19:18:41 -->
+<!-- Updated: 2025-08-16 19:22:02 -->
 </body>
 </html>
