@@ -383,7 +383,7 @@
                 <div class="card-body">
                     <div class="hours-display">
                         <span class="hours-text" style="color: #22c55e;" id="hours-display-1">
-                            10/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)">h
+                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" style="width: 40px;">+<span id="current-hours-1">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)">h
                         </span>
                         <span class="hours-percentage" id="hours-percentage-1">
                             10%
@@ -945,25 +945,34 @@
             window.location.reload();
         }, 300000);
 
-        // Function to update progress bar and percentage when target hours change
+        // Function to update progress bar and percentage when baseline or target hours change
         function updateProgress(cardId) {
+            const baselineInput = document.getElementById('baseline-hours-' + cardId);
+            const currentElement = document.getElementById('current-hours-' + cardId);
             const targetInput = document.getElementById('target-hours-' + cardId);
             const percentage = document.getElementById('hours-percentage-' + cardId);
             const progressFill = document.getElementById('progress-fill-' + cardId);
             const hoursDisplay = document.getElementById('hours-display-' + cardId);
             
-            // Get actual hours from the display (updated by dashboard_updater.py)
-            const actualHoursElement = document.getElementById('hours-display-' + cardId);
-            const actualHours = parseInt(actualHoursElement.textContent.split('/')[0]) || 10;
+            // Get values
+            let baselineHours = parseInt(baselineInput.value) || 0;
+            const currentHours = parseInt(currentElement.textContent) || 10; // From IoT data
             let targetHours = parseInt(targetInput.value) || 100;
             
-            // Ensure target hours stay within bounds
+            // Ensure values stay within bounds
+            if (baselineHours < 0) baselineHours = 0;
+            if (baselineHours > 999) baselineHours = 999;
+            baselineInput.value = baselineHours;
+            
             if (targetHours < 1) targetHours = 1;
             if (targetHours > 999) targetHours = 999;
             targetInput.value = targetHours;
             
-            // Calculate percentage based on actual/target
-            const percentageValue = Math.round((actualHours / targetHours) * 100);
+            // Calculate total hours (baseline + current from IoT)
+            const totalActualHours = baselineHours + currentHours;
+            
+            // Calculate percentage based on (baseline + current) / target
+            const percentageValue = Math.round((totalActualHours / targetHours) * 100);
             
             // Update percentage display
             percentage.textContent = percentageValue + '%';
@@ -984,17 +993,25 @@
             }
             
             // Save to localStorage for persistence
+            localStorage.setItem('equipment-baseline-hours-' + cardId, baselineHours);
             localStorage.setItem('equipment-target-hours-' + cardId, targetHours);
         }
         
         // Load saved values on page load
         window.addEventListener('DOMContentLoaded', function() {
+            // Load saved baseline hours
+            const savedBaseline = localStorage.getItem('equipment-baseline-hours-1');
+            if (savedBaseline !== null) {
+                document.getElementById('baseline-hours-1').value = savedBaseline;
+            }
+            
             // Load saved target hours
             const savedTarget = localStorage.getItem('equipment-target-hours-1');
             if (savedTarget !== null) {
                 document.getElementById('target-hours-1').value = savedTarget;
             }
-            // Always update progress on load to reflect current actual hours
+            
+            // Always update progress on load to reflect current values
             updateProgress(1);
             
             // Load saved equipment name
@@ -1026,6 +1043,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 18:17:27 -->
+<!-- Updated: 2025-08-16 18:24:46 -->
 </body>
 </html>
