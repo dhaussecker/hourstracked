@@ -178,15 +178,16 @@
         }
         
         .hours-input {
-            width: 60px;
-            font-size: 22px;
+            width: 80px;
+            font-size: 18px;
             font-weight: 700;
             border: 2px solid #c4d82d;
-            border-radius: 4px;
-            padding: 2px 5px;
+            border-radius: 6px;
+            padding: 10px 8px;
             text-align: center;
-            background: white;
-            color: #22c55e;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%);
+            color: #c4d82d;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .hours-input:focus {
@@ -384,12 +385,22 @@
                     <!-- Hours Input Fields -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                         <div style="text-align: center;">
-                            <div style="font-size: 11px; color: #64748b; margin-bottom: 3px;">Baseline Hours</div>
-                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" style="width: 60px; text-align: center;">
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Baseline Hours</div>
+                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)">
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 11px; color: #64748b; margin-bottom: 3px;">Tracked Hours</div>
-                            <div style="font-size: 18px; font-weight: 600; color: #22c55e; padding: 6px;" id="current-hours-1">10</div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Tracked Hours</div>
+                            <div style="
+                                font-size: 18px; 
+                                font-weight: 700; 
+                                color: #c4d82d; 
+                                padding: 10px 8px;
+                                background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%);
+                                border: 2px solid #c4d82d;
+                                border-radius: 6px;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                                min-width: 80px;
+                            " id="current-hours-1">10</div>
                         </div>
                     </div>
                     
@@ -1060,6 +1071,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 18:28:56 -->
+<!-- Updated: 2025-08-16 18:34:01 -->
 </body>
 </html>
