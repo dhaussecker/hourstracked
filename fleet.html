@@ -211,6 +211,42 @@
             border-color: #a3c020;
             border-style: solid;
         }
+        
+        .edit-btn {
+            background: #c4d82d;
+            color: #1e3a5f;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.2s;
+        }
+        
+        .edit-btn:hover {
+            background: #d4e834;
+        }
+        
+        .edit-btn.editing {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .hours-input:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .editable-text.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            border-style: solid;
+            border-color: #e2e8f0;
+        }
 
         .hours-percentage {
             font-size: 14px;
@@ -374,19 +410,22 @@
         <div class="equipment-grid">
             <div class="equipment-card clickable ">
                 <div class="card-header">
-                    <div class="equipment-id" contenteditable="true" class="editable-text" id="equipment-name-1">Generator 11293651</div>
-                    <div class="equipment-type" contenteditable="true" class="editable-text" id="equipment-type-1">United Rentals</div>
+                    <div class="equipment-id editable-text disabled" contenteditable="false" id="equipment-name-1">Generator 11293651</div>
+                    <div class="equipment-type editable-text disabled" contenteditable="false" id="equipment-type-1">United Rentals</div>
                     <div class="status-badge" style="background-color: #22c55e;">
                         Good
                     </div>
                 </div>
 
                 <div class="card-body">
+                    <!-- Edit Button -->
+                    <button class="edit-btn" id="edit-btn-1" onclick="toggleEditMode(1)">✏️ Edit</button>
+                    
                     <!-- Hours Input Fields -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
                         <div style="text-align: center;">
                             <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Baseline Hours</div>
-                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)">
+                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" disabled>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Tracked Hours</div>
@@ -407,7 +446,7 @@
                     <!-- Accumulated Hours Display -->
                     <div class="hours-display">
                         <span class="hours-text" style="color: #22c55e;" id="hours-display-1">
-                            <span id="accumulated-hours-1">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)">h
+                            <span id="accumulated-hours-1">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)" disabled>h
                         </span>
                         <span class="hours-percentage" id="hours-percentage-1">
                             10%
@@ -425,7 +464,7 @@
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Brand</div>
-                            <div class="detail-value" contenteditable="true" class="editable-text" id="equipment-brand-1">United Rentals</div>
+                            <div class="detail-value editable-text disabled" contenteditable="false" id="equipment-brand-1">United Rentals</div>
                         </div>
                         
                     <div class="detail-item">
@@ -969,6 +1008,62 @@
             window.location.reload();
         }, 300000);
 
+        // Function to toggle edit mode for a card
+        function toggleEditMode(cardId) {
+            const editBtn = document.getElementById('edit-btn-' + cardId);
+            const baselineInput = document.getElementById('baseline-hours-' + cardId);
+            const targetInput = document.getElementById('target-hours-' + cardId);
+            const equipmentName = document.getElementById('equipment-name-' + cardId);
+            const equipmentType = document.getElementById('equipment-type-' + cardId);
+            const equipmentBrand = document.getElementById('equipment-brand-' + cardId);
+            
+            const isEditing = editBtn.classList.contains('editing');
+            
+            if (isEditing) {
+                // Exit edit mode
+                editBtn.classList.remove('editing');
+                editBtn.innerHTML = '✏️ Edit';
+                
+                // Disable inputs
+                baselineInput.disabled = true;
+                targetInput.disabled = true;
+                
+                // Disable contenteditable fields
+                equipmentName.contentEditable = false;
+                equipmentType.contentEditable = false;
+                equipmentBrand.contentEditable = false;
+                
+                // Add disabled styling
+                equipmentName.classList.add('disabled');
+                equipmentType.classList.add('disabled');
+                equipmentBrand.classList.add('disabled');
+                
+                // Save all values to localStorage
+                localStorage.setItem('equipment-name-1', equipmentName.textContent);
+                localStorage.setItem('equipment-type-1', equipmentType.textContent);
+                localStorage.setItem('equipment-brand-1', equipmentBrand.textContent);
+                
+            } else {
+                // Enter edit mode
+                editBtn.classList.add('editing');
+                editBtn.innerHTML = '💾 Save';
+                
+                // Enable inputs
+                baselineInput.disabled = false;
+                targetInput.disabled = false;
+                
+                // Enable contenteditable fields
+                equipmentName.contentEditable = true;
+                equipmentType.contentEditable = true;
+                equipmentBrand.contentEditable = true;
+                
+                // Remove disabled styling
+                equipmentName.classList.remove('disabled');
+                equipmentType.classList.remove('disabled');
+                equipmentBrand.classList.remove('disabled');
+            }
+        }
+
         // Function to update progress bar and percentage when baseline or target hours change
         function updateProgress(cardId) {
             const baselineInput = document.getElementById('baseline-hours-' + cardId);
@@ -1060,17 +1155,13 @@
                 document.getElementById('equipment-brand-1').textContent = savedBrand;
             }
             
-            // Make editable fields save on change
-            document.querySelectorAll('.editable-text').forEach(element => {
-                element.addEventListener('blur', function() {
-                    localStorage.setItem(this.id, this.textContent);
-                });
-            });
+            // Note: Edit mode controls when fields can be edited
+            // Saving happens when exiting edit mode via the toggleEditMode function
         });
         
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 18:34:01 -->
+<!-- Updated: 2025-08-16 18:37:53 -->
 </body>
 </html>
