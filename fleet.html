@@ -381,9 +381,22 @@
                 </div>
 
                 <div class="card-body">
+                    <!-- Hours Input Fields -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 3px;">Baseline Hours</div>
+                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" style="width: 60px; text-align: center;">
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 3px;">Tracked Hours</div>
+                            <div style="font-size: 18px; font-weight: 600; color: #22c55e; padding: 6px;" id="current-hours-1">10</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accumulated Hours Display -->
                     <div class="hours-display">
                         <span class="hours-text" style="color: #22c55e;" id="hours-display-1">
-                            <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" style="width: 40px;">+<span id="current-hours-1">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)">h
+                            <span id="accumulated-hours-1">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)">h
                         </span>
                         <span class="hours-percentage" id="hours-percentage-1">
                             10%
@@ -950,6 +963,7 @@
             const baselineInput = document.getElementById('baseline-hours-' + cardId);
             const currentElement = document.getElementById('current-hours-' + cardId);
             const targetInput = document.getElementById('target-hours-' + cardId);
+            const accumulatedElement = document.getElementById('accumulated-hours-' + cardId);
             const percentage = document.getElementById('hours-percentage-' + cardId);
             const progressFill = document.getElementById('progress-fill-' + cardId);
             const hoursDisplay = document.getElementById('hours-display-' + cardId);
@@ -968,11 +982,14 @@
             if (targetHours > 999) targetHours = 999;
             targetInput.value = targetHours;
             
-            // Calculate total hours (baseline + current from IoT)
-            const totalActualHours = baselineHours + currentHours;
+            // Calculate accumulated hours (baseline + current from IoT)
+            const accumulatedHours = baselineHours + currentHours;
             
-            // Calculate percentage based on (baseline + current) / target
-            const percentageValue = Math.round((totalActualHours / targetHours) * 100);
+            // Update accumulated hours display
+            accumulatedElement.textContent = accumulatedHours;
+            
+            // Calculate percentage based on accumulated / target
+            const percentageValue = Math.round((accumulatedHours / targetHours) * 100);
             
             // Update percentage display
             percentage.textContent = percentageValue + '%';
@@ -1043,6 +1060,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 18:24:46 -->
+<!-- Updated: 2025-08-16 18:28:56 -->
 </body>
 </html>
