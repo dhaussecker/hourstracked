@@ -428,25 +428,26 @@
                             <input type="number" class="hours-input" id="baseline-hours-1" value="0" min="0" max="999" onchange="updateProgress(1)" disabled>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Tracked Hours</div>
+                            <div style="font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600;">Tracked Hours (IoT)</div>
                             <div style="
                                 font-size: 18px; 
                                 font-weight: 700; 
-                                color: #c4d82d; 
+                                color: #64748b; 
                                 padding: 10px 8px;
-                                background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%);
-                                border: 2px solid #c4d82d;
+                                background: #f1f5f9;
+                                border: 2px solid #e2e8f0;
                                 border-radius: 6px;
                                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                                 min-width: 80px;
+                                opacity: 0.8;
                             " id="current-hours-1">10</div>
                         </div>
                     </div>
                     
                     <!-- Accumulated Hours Display -->
                     <div class="hours-display">
-                        <span class="hours-text" style="color: #22c55e;" id="hours-display-1">
-                            <span id="accumulated-hours-1">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)" disabled>h
+                        <span class="hours-text" id="hours-display-1">
+                            <span id="accumulated-hours-1" style="color: #1e3a5f;">10</span>/<input type="number" class="hours-input" id="target-hours-1" value="100" min="1" max="999" onchange="updateProgress(1)" disabled><span style="color: #1e3a5f;">h</span>
                         </span>
                         <span class="hours-percentage" id="hours-percentage-1">
                             10%
@@ -1162,6 +1163,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 18:37:53 -->
+<!-- Updated: 2025-08-16 19:01:05 -->
 </body>
 </html>
