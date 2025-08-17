@@ -356,12 +356,16 @@
             <div class="stat-label">Active Now</div>
         </div>
         <div class="stat-item">
+            <div class="stat-value" style="color: #22c55e;">5</div>
+            <div class="stat-label">Good (<75%)</div>
+        </div>
+        <div class="stat-item">
             <div class="stat-value stat-caution">3</div>
-            <div class="stat-label">Maintenance Required (50-90%)</div>
+            <div class="stat-label">Maintenance Required (75-100%)</div>
         </div>
         <div class="stat-item">
             <div class="stat-value stat-critical">0</div>
-            <div class="stat-label">Critical (90%+)</div>
+            <div class="stat-label">Critical (100%+)</div>
         </div>
     </div>
 
@@ -964,18 +968,18 @@
             // Update percentage display
             percentage.textContent = percentageValue + '%';
             
-            // Update progress bar width
-            progressFill.style.width = Math.min(percentageValue, 100) + '%';
+            // Update progress bar width (allow over 100% for critical cases)
+            progressFill.style.width = Math.min(percentageValue, 120) + '%';
             
             // Update progress bar color based on utilization
-            if (percentageValue >= 90) {
-                progressFill.style.backgroundColor = '#ef4444'; // Red for high usage
+            if (percentageValue > 100) {
+                progressFill.style.backgroundColor = '#ef4444'; // Red for Critical (>100%)
                 hoursDisplay.style.color = '#ef4444';
             } else if (percentageValue >= 75) {
-                progressFill.style.backgroundColor = '#f59e0b'; // Orange for medium usage
+                progressFill.style.backgroundColor = '#f59e0b'; // Orange for Maintenance Required (75-100%)
                 hoursDisplay.style.color = '#f59e0b';
             } else {
-                progressFill.style.backgroundColor = '#22c55e'; // Green for low usage
+                progressFill.style.backgroundColor = '#22c55e'; // Green for Good (<75%)
                 hoursDisplay.style.color = '#22c55e';
             }
             
@@ -1022,6 +1026,6 @@
         // Remove the old click handler since we now have a button
         // Cards are no longer clickable as a whole
     </script>
-<!-- Updated: 2025-08-16 17:15:59 -->
+<!-- Updated: 2025-08-16 18:17:27 -->
 </body>
 </html>
