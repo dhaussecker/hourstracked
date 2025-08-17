@@ -370,6 +370,24 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+        
+        /* Ensure Leaflet map displays properly */
+        .satellite-map .leaflet-container {
+            background: #f8fafc !important;
+        }
+        
+        .satellite-map .leaflet-control-container {
+            position: relative;
+        }
+        
+        /* Fix potential z-index conflicts */
+        .satellite-map {
+            z-index: 1;
+        }
+        
+        .edit-btn {
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -1174,82 +1192,90 @@
         
         // Initialize Leaflet map for first equipment only
         function initializeMaps() {
-            // Only initialize map-1 (first equipment)
-            const mapElement = document.getElementById('map-1');
-            if (mapElement) {
-                const lat = parseFloat(mapElement.dataset.lat);
-                const lon = parseFloat(mapElement.dataset.lon);
-                
-                if (lat && lon) {
-                    // Create the map with full interactivity
-                    const map = L.map(mapElement, {
-                        center: [lat, lon],
-                        zoom: 16,
-                        zoomControl: true,
-                        attributionControl: true,
-                        scrollWheelZoom: true,
-                        doubleClickZoom: true,
-                        boxZoom: true,
-                        keyboard: true,
-                        dragging: true
-                    });
+            try {
+                // Only initialize map-1 (first equipment)
+                const mapElement = document.getElementById('map-1');
+                if (mapElement && typeof L !== 'undefined') {
+                    const lat = parseFloat(mapElement.dataset.lat);
+                    const lon = parseFloat(mapElement.dataset.lon);
                     
-                    // Add satellite tile layer (same as index.html)
-                    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                        attribution: 'Esri',
-                        maxZoom: 19,
-                        id: 'satellite'
-                    }).addTo(map);
-                    
-                    // Add optional OpenStreetMap layer
-                    const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap contributors',
-                        maxZoom: 19,
-                        id: 'osm'
-                    });
-                    
-                    // Layer control
-                    const baseLayers = {
-                        "Satellite": satellite,
-                        "Street Map": osm
-                    };
-                    L.control.layers(baseLayers).addTo(map);
-                    
-                    // Add a marker with equipment info
-                    const customIcon = L.divIcon({
-                        html: '<div style="background: #c4d82d; width: 16px; height: 16px; border-radius: 50%; border: 3px solid #1e3a5f; box-shadow: 0 3px 6px rgba(0,0,0,0.4);"></div>',
-                        className: 'custom-equipment-marker',
-                        iconSize: [22, 22],
-                        iconAnchor: [11, 11]
-                    });
-                    
-                    const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
-                    
-                    // Add popup with equipment info
-                    const popupContent = `
-                        <div style="padding: 10px; text-align: center;">
-                            <h3 style="margin: 0 0 5px 0; color: #1e3a5f;">Generator 11293651</h3>
-                            <p style="margin: 0; color: #64748b; font-size: 12px;">Last Known Location</p>
-                            <p style="margin: 5px 0 0 0; font-family: monospace; font-size: 11px;">${lat.toFixed(5)}, ${lon.toFixed(5)}</p>
-                        </div>
-                    `;
-                    marker.bindPopup(popupContent);
-                    
-                    // Add fullscreen button
-                    const fullscreenButton = L.control({position: 'topleft'});
-                    fullscreenButton.onAdd = function(map) {
-                        const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-                        div.innerHTML = '<a href="#" style="background: white; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #333; font-size: 16px;" title="Fullscreen">⛶</a>';
-                        
-                        L.DomEvent.on(div.querySelector('a'), 'click', function(e) {
-                            e.preventDefault();
-                            openMapFullscreen(lat, lon);
+                    if (lat && lon && !isNaN(lat) && !isNaN(lon)) {
+                        // Create the map with full interactivity
+                        const map = L.map(mapElement, {
+                            center: [lat, lon],
+                            zoom: 16,
+                            zoomControl: true,
+                            attributionControl: true,
+                            scrollWheelZoom: true,
+                            doubleClickZoom: true,
+                            boxZoom: true,
+                            keyboard: true,
+                            dragging: true
                         });
                         
-                        return div;
-                    };
-                    fullscreenButton.addTo(map);
+                        // Add satellite tile layer (same as index.html)
+                        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: 'Esri',
+                            maxZoom: 19
+                        }).addTo(map);
+                        
+                        // Add optional OpenStreetMap layer
+                        const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors',
+                            maxZoom: 19
+                        });
+                        
+                        // Layer control
+                        const baseLayers = {
+                            "Satellite": satellite,
+                            "Street Map": osm
+                        };
+                        L.control.layers(baseLayers).addTo(map);
+                        
+                        // Add a marker with equipment info
+                        const customIcon = L.divIcon({
+                            html: '<div style="background: #c4d82d; width: 16px; height: 16px; border-radius: 50%; border: 3px solid #1e3a5f; box-shadow: 0 3px 6px rgba(0,0,0,0.4);"></div>',
+                            className: 'custom-equipment-marker',
+                            iconSize: [22, 22],
+                            iconAnchor: [11, 11]
+                        });
+                        
+                        const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
+                        
+                        // Add popup with equipment info
+                        const popupContent = `
+                            <div style="padding: 10px; text-align: center;">
+                                <h3 style="margin: 0 0 5px 0; color: #1e3a5f;">Generator 11293651</h3>
+                                <p style="margin: 0; color: #64748b; font-size: 12px;">Last Known Location</p>
+                                <p style="margin: 5px 0 0 0; font-family: monospace; font-size: 11px;">${lat.toFixed(5)}, ${lon.toFixed(5)}</p>
+                            </div>
+                        `;
+                        marker.bindPopup(popupContent);
+                        
+                        // Add fullscreen button
+                        const fullscreenButton = L.control({position: 'topleft'});
+                        fullscreenButton.onAdd = function(map) {
+                            const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+                            div.innerHTML = '<a href="#" style="background: white; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #333; font-size: 16px;" title="Fullscreen">⛶</a>';
+                            
+                            L.DomEvent.on(div.querySelector('a'), 'click', function(e) {
+                                e.preventDefault();
+                                openMapFullscreen(lat, lon);
+                            });
+                            
+                            return div;
+                        };
+                        fullscreenButton.addTo(map);
+                        
+                        console.log('Map initialized successfully');
+                    } else {
+                        console.error('Invalid coordinates:', lat, lon);
+                    }
+                } else {
+                    console.error('Map element not found or Leaflet not loaded');
                 }
+            } catch (error) {
+                console.error('Error initializing map:', error);
             }
         }
         
@@ -1317,7 +1343,7 @@
                         marker.bindPopup(popupContent);
                         marker.openPopup();
                     </script>
-                <!-- Updated: 2025-08-16 19:40:40 -->
+                <!-- Updated: 2025-08-16 19:43:23 -->
 </body>
                 </html>
             `);
@@ -1325,10 +1351,20 @@
         
         // Initialize maps when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Small delay to ensure DOM is fully ready
-            setTimeout(initializeMaps, 100);
+            // Ensure all other functionality loads first
+            console.log('DOM loaded, initializing maps...');
+            
+            // Larger delay to ensure Leaflet is fully loaded
+            setTimeout(function() {
+                if (typeof L !== 'undefined') {
+                    initializeMaps();
+                } else {
+                    console.error('Leaflet not loaded yet, retrying...');
+                    setTimeout(initializeMaps, 1000);
+                }
+            }, 500);
         });
     </script>
-<!-- Updated: 2025-08-16 19:40:40 -->
+<!-- Updated: 2025-08-16 19:43:23 -->
 </body>
 </html>
