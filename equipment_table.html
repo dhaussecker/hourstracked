@@ -3,110 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TauLab Equipment Management System</title>
+    <title>TauLab Equipment Management</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%);
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); 
             min-height: 100vh;
             color: white;
-            padding: 20px;
+            line-height: 1.6;
         }
 
         .header {
             background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            margin-bottom: 20px;
             color: white;
-            border: 2px solid rgba(196, 216, 45, 0.3);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .company-logo {
+            height: 90px;
+            width: auto;
+            filter: brightness(1.1);
+        }
+
+        .header-text {
+            text-align: center;
         }
 
         .header h1 {
             font-size: 32px;
             font-weight: 700;
-            margin-bottom: 5px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
         }
 
         .header p {
             font-size: 16px;
             opacity: 0.9;
-            color: #c4d82d;
         }
 
-        .controls {
-            background: rgba(255, 255, 255, 0.98);
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
+            margin: 20px;
             border-radius: 12px;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-total { color: #1e3a5f; }
+        .stat-active { color: #22c55e; }
+        .stat-iot { color: #c4d82d; }
+        .stat-service { color: #f59e0b; }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            border: 1px solid rgba(196, 216, 45, 0.2);
+            gap: 10px;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s;
+            transition: all 0.2s;
             margin: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .btn-primary { 
-            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); 
-            color: white; 
-        }
-        .btn-success { 
-            background: linear-gradient(135deg, #c4d82d 0%, #a4b824 100%); 
-            color: #1e3a5f; 
-        }
-        .btn-warning { 
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
-            color: white; 
-        }
-        .btn-danger { 
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%); 
-            color: white; 
-        }
-
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-success { background: #22c55e; color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-danger { background: #dc2626; color: white; }
+        
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .table-container {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            margin-bottom: 20px;
-            border: 1px solid rgba(196, 216, 45, 0.2);
+            border: 1px solid rgba(196, 216, 45, 0.3);
         }
 
         .table-wrapper {
             overflow-x: auto;
-            max-height: 70vh;
+            max-height: 60vh;
             overflow-y: auto;
         }
 
@@ -118,19 +151,16 @@
         }
 
         .equipment-table th {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%);
-            padding: 14px 10px;
+            background: #f8fafc;
+            padding: 12px 8px;
             text-align: left;
-            border-bottom: 3px solid #c4d82d;
+            border-bottom: 2px solid #e2e8f0;
             font-weight: 600;
-            color: white;
+            color: #374151;
             position: sticky;
             top: 0;
             z-index: 10;
             white-space: nowrap;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
         }
 
         .equipment-table td {
@@ -175,50 +205,48 @@
         }
 
         .iot-data {
-            background: linear-gradient(135deg, #c4d82d 0%, #a4b824 100%);
+            background: #c4d82d;
             color: #1e3a5f;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-weight: 700;
+            font-weight: 600;
             text-align: center;
             display: inline-block;
             min-width: 60px;
-            box-shadow: 0 2px 8px rgba(196, 216, 45, 0.3);
         }
 
         .coordinates {
             font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 12px;
+            font-size: 11px;
             color: #6b7280;
             background: #f1f5f9;
-            padding: 4px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
+            margin-top: 2px;
+            display: inline-block;
         }
 
         .status-indicator {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #c4d82d 0%, #a4b824 100%);
-            color: #1e3a5f;
-            padding: 12px 24px;
+            background: #22c55e;
+            color: white;
+            padding: 10px 20px;
             border-radius: 8px;
             display: none;
             z-index: 1000;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(196, 216, 45, 0.4);
+            font-weight: 600;
         }
 
         .vendor-united { color: #dc2626; font-weight: 600; }
         .vendor-herc { color: #3b82f6; font-weight: 600; }
         .vendor-other { color: #6b7280; font-weight: 600; }
 
-        .location-footprint { background: #dcfce7; color: #166534; }
-        .location-toolcrib { background: #fef3c7; color: #92400e; }
-        .location-hrsg { background: #dbeafe; color: #1d4ed8; }
-        .location-other { background: #f3f4f6; color: #374151; }
+        .location-footprint { background: #dcfce7; padding: 2px 6px; border-radius: 4px; color: #166534; }
+        .location-toolcrib { background: #fef3c7; padding: 2px 6px; border-radius: 4px; color: #92400e; }
+        .location-hrsg { background: #dbeafe; padding: 2px 6px; border-radius: 4px; color: #1d4ed8; }
+        .location-other { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; color: #374151; }
 
         .alert-normal { color: #22c55e; }
         .alert-warning { color: #f59e0b; }
@@ -240,6 +268,17 @@
             width: 80px;
             text-align: center;
         }
+
+        .refresh-info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            color: #64748b;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(196, 216, 45, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -247,11 +286,30 @@
 
     <div class="header">
         <div class="header-content">
-            <img src="taulab.png" alt="TauLab" style="height: 80px; width: auto; filter: brightness(1.1);">
-            <div>
-                <h1>TauLab Equipment Management System</h1>
-                <p>Professional Fleet Equipment Tracking and Management</p>
+            <img src="taulab.png" alt="TauLab" class="company-logo">
+            <div class="header-text">
+                <h1>TauLab Equipment Management</h1>
+                <p>Professional fleet equipment tracking with real-time IoT integration</p>
             </div>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value stat-total" id="totalEquipmentStat">0</div>
+            <div class="stat-label">Total Equipment</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value stat-active" id="activeEquipmentStat">0</div>
+            <div class="stat-label">Active Equipment</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value stat-iot" id="iotHoursStat">0</div>
+            <div class="stat-label">IoT Hours Today</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value stat-service" id="serviceRequiredStat">0</div>
+            <div class="stat-label">Service Required</div>
         </div>
     </div>
 
@@ -270,44 +328,35 @@
         </div>
     </div>
 
-    <div class="table-container">
-        <div class="table-wrapper">
-            <table class="equipment-table">
-                <thead>
-                    <tr>
-                        <th>Vendor</th>
-                        <th>Location</th>
-                        <th>Current Hours (IoT)</th>
-                        <th>Next Service Hours</th>
-                        <th>Alert Hours</th>
-                        <th>Equipment Name</th>
-                        <th>Equipment Number</th>
-                        <th>Date On Site</th>
-                        <th>Date Off Site</th>
-                        <th>Returned Hours</th>
-                        <th>Last Service Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="equipmentTableBody">
-                    <!-- Data will be populated here -->
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table class="equipment-table">
+                    <thead>
+                        <tr>
+                            <th>Vendor</th>
+                            <th>Location</th>
+                            <th>Current Hours (IoT)</th>
+                            <th>Next Service Hours</th>
+                            <th>Alert Hours</th>
+                            <th>Equipment Name</th>
+                            <th>Equipment Number</th>
+                            <th>Date On Site</th>
+                            <th>Date Off Site</th>
+                            <th>Returned Hours</th>
+                            <th>Last Service Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="equipmentTableBody">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
-    <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); padding: 15px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); display: flex; justify-content: space-around; align-items: center; color: white; border: 1px solid rgba(196, 216, 45, 0.2);">
-        <div>
-            <span style="color: #c4d82d; font-weight: 600;">LAST SAVED:</span>
-            <span id="lastSaved" style="margin-left: 10px;">Never</span>
-        </div>
-        <div>
-            <span style="color: #c4d82d; font-weight: 600;">TOTAL EQUIPMENT:</span>
-            <span id="equipmentCount" style="margin-left: 10px; font-weight: 700; font-size: 18px;">0</span>
-        </div>
-        <div id="iotStatus" style="color: #c4d82d;">
-            <span style="font-weight: 600;">IOT STATUS:</span>
-            <span style="margin-left: 10px;">Connected</span>
+        <div class="refresh-info">
+            <p>Last saved: <span id="lastSaved">Never</span> | Auto-refresh every 30 seconds</p>
         </div>
     </div>
 
@@ -329,13 +378,12 @@
             
             renderTable();
             updateStats();
-            updateIoTStatus();
             
             // Start auto-update for IoT data
             iotIntegration.startAutoUpdate(async () => {
                 equipmentData = await iotIntegration.updateEquipmentWithIoTData(equipmentData);
                 renderTable();
-                updateIoTStatus();
+                updateStats();
                 showStatus('IoT data updated');
             });
         }
@@ -356,7 +404,7 @@
             }
         }
 
-        // Load default sample data
+        // Load default sample data - matching fleet.html exactly
         function loadDefaultData() {
             equipmentData = [
                 {
@@ -364,10 +412,10 @@
                     vendor: "United Rentals",
                     location: "In Footprint",
                     locationCoords: "52.1284, -104.5188",
-                    currentHours: 7, // IoT data - not editable
+                    currentHours: 3, // IoT data from fleet.html
                     nextServiceHours: 100,
                     alertHours: 90,
-                    equipmentName: "50-59 kVA Towable Generator",
+                    equipmentName: "Generator",
                     equipmentNumber: "11293651",
                     dateOnSite: "2025-08-01",
                     dateOffSite: "",
@@ -376,13 +424,13 @@
                 },
                 {
                     id: 2,
-                    vendor: "United Rentals",
+                    vendor: "United Rentals", 
                     location: "Tool Crib",
                     locationCoords: "52.129, -104.5195",
-                    currentHours: 45,
-                    nextServiceHours: 80,
-                    alertHours: 70,
-                    equipmentName: "Air Compressor 185 CFM",
+                    currentHours: 10, // From fleet.html
+                    nextServiceHours: 100,
+                    alertHours: 90,
+                    equipmentName: "Compressor",
                     equipmentNumber: "11294782",
                     dateOnSite: "2025-08-03",
                     dateOffSite: "",
@@ -391,14 +439,14 @@
                 },
                 {
                     id: 3,
-                    vendor: "Herc Rentals",
-                    location: "HRSG PAD",
+                    vendor: "United Rentals",
+                    location: "HRSG PAD", 
                     locationCoords: "52.1275, -104.518",
-                    currentHours: 88,
+                    currentHours: 8, // From fleet.html
                     nextServiceHours: 100,
-                    alertHours: 95,
-                    equipmentName: "Light Tower LED 6kW",
-                    equipmentNumber: "HR-5433",
+                    alertHours: 90,
+                    equipmentName: "Light Tower",
+                    equipmentNumber: "11295433",
                     dateOnSite: "2025-07-28",
                     dateOffSite: "",
                     returnedHours: 0,
@@ -406,13 +454,13 @@
                 },
                 {
                     id: 4,
-                    vendor: "United Rentals",
+                    vendor: "Caterpillar",
                     location: "In Footprint",
-                    locationCoords: "52.1282, -104.519",
-                    currentHours: 62,
-                    nextServiceHours: 120,
-                    alertHours: 110,
-                    equipmentName: "Excavator Cat 320",
+                    locationCoords: "52.1282, -104.519", 
+                    currentHours: 42, // From fleet.html
+                    nextServiceHours: 100,
+                    alertHours: 90,
+                    equipmentName: "Excavator",
                     equipmentNumber: "11296124",
                     dateOnSite: "2025-07-25",
                     dateOffSite: "",
@@ -421,14 +469,89 @@
                 },
                 {
                     id: 5,
-                    vendor: "Herc Rentals",
+                    vendor: "Bobcat",
                     location: "Tool Crib",
                     locationCoords: "52.1288, -104.5185",
-                    currentHours: 95,
+                    currentHours: 21, // From fleet.html
+                    nextServiceHours: 100, 
+                    alertHours: 90,
+                    equipmentName: "Skid Steer",
+                    equipmentNumber: "11297856",
+                    dateOnSite: "2025-08-05",
+                    dateOffSite: "",
+                    returnedHours: 0,
+                    lastServiceDate: "2025-07-25"
+                },
+                {
+                    id: 6,
+                    vendor: "Toyota",
+                    location: "In Footprint", 
+                    locationCoords: "52.1284, -104.5188",
+                    currentHours: 64, // From fleet.html
                     nextServiceHours: 100,
-                    alertHours: 98,
-                    equipmentName: "Skid Steer Bobcat S650",
-                    equipmentNumber: "HR-7856",
+                    alertHours: 90,
+                    equipmentName: "Forklift",
+                    equipmentNumber: "11298567",
+                    dateOnSite: "2025-08-01",
+                    dateOffSite: "",
+                    returnedHours: 0,
+                    lastServiceDate: "2025-07-15"
+                },
+                {
+                    id: 7,
+                    vendor: "Liebherr",
+                    location: "Tool Crib",
+                    locationCoords: "52.129, -104.5195",
+                    currentHours: 29, // From fleet.html
+                    nextServiceHours: 100,
+                    alertHours: 90,
+                    equipmentName: "Crane",
+                    equipmentNumber: "11299348", 
+                    dateOnSite: "2025-08-03",
+                    dateOffSite: "",
+                    returnedHours: 0,
+                    lastServiceDate: "2025-07-20"
+                },
+                {
+                    id: 8,
+                    vendor: "Caterpillar",
+                    location: "HRSG PAD",
+                    locationCoords: "52.1275, -104.518",
+                    currentHours: 42, // From fleet.html
+                    nextServiceHours: 100,
+                    alertHours: 90,
+                    equipmentName: "Bulldozer",
+                    equipmentNumber: "11300129",
+                    dateOnSite: "2025-07-28", 
+                    dateOffSite: "",
+                    returnedHours: 0,
+                    lastServiceDate: "2025-07-10"
+                },
+                {
+                    id: 9,
+                    vendor: "United Rentals",
+                    location: "In Footprint",
+                    locationCoords: "52.1282, -104.519",
+                    currentHours: 73, // From fleet.html
+                    nextServiceHours: 100,
+                    alertHours: 90,
+                    equipmentName: "Dump Truck",
+                    equipmentNumber: "11301045",
+                    dateOnSite: "2025-07-25",
+                    dateOffSite: "",
+                    returnedHours: 0,
+                    lastServiceDate: "2025-06-30"
+                },
+                {
+                    id: 10,
+                    vendor: "Lincoln",
+                    location: "Tool Crib", 
+                    locationCoords: "52.1288, -104.5185",
+                    currentHours: 69, // From fleet.html
+                    nextServiceHours: 100,
+                    alertHours: 90,
+                    equipmentName: "Welder",
+                    equipmentNumber: "11302678",
                     dateOnSite: "2025-08-05",
                     dateOffSite: "",
                     returnedHours: 0,
@@ -461,7 +584,8 @@
                                   onclick="makeEditable(this)">
                                 ${equipment.location}
                             </span>
-                            <div class="coordinates">${equipment.locationCoords}</div>
+                            <br>
+                            <span class="coordinates">${equipment.locationCoords}</span>
                         </div>
                     </td>
                     <td>
@@ -535,7 +659,7 @@
                                onchange="updateField(this)">
                     </td>
                     <td>
-                        <button class="btn btn-danger" onclick="deleteEquipment(${index})" style="padding: 6px 12px; font-size: 11px; text-transform: none;">Delete</button>
+                        <button class="btn btn-danger" onclick="deleteEquipment(${index})" style="padding: 4px 8px; font-size: 12px;">Delete</button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -754,7 +878,6 @@
                             throw new Error('Invalid JSON format');
                         }
                     } else if (file.name.endsWith('.csv')) {
-                        // Basic CSV parsing - you might want to use a library for production
                         const lines = e.target.result.split('\n');
                         const headers = lines[0].split(',');
                         equipmentData = [];
@@ -762,7 +885,6 @@
                         for (let i = 1; i < lines.length; i++) {
                             if (lines[i].trim()) {
                                 const values = lines[i].split(',');
-                                // This is a simplified CSV parser - production code should handle quotes, escaping, etc.
                                 const equipment = {
                                     id: i,
                                     vendor: values[0]?.replace(/"/g, '') || '',
@@ -807,7 +929,15 @@
 
         // Update statistics
         function updateStats() {
-            document.getElementById('equipmentCount').textContent = equipmentData.length;
+            const totalEquipment = equipmentData.length;
+            const activeEquipment = equipmentData.filter(eq => !eq.dateOffSite).length;
+            const totalIoTHours = equipmentData.reduce((sum, eq) => sum + eq.currentHours, 0);
+            const serviceRequired = equipmentData.filter(eq => eq.currentHours >= eq.alertHours).length;
+            
+            document.getElementById('totalEquipmentStat').textContent = totalEquipment;
+            document.getElementById('activeEquipmentStat').textContent = activeEquipment;
+            document.getElementById('iotHoursStat').textContent = totalIoTHours;
+            document.getElementById('serviceRequiredStat').textContent = serviceRequired;
         }
 
         // Update last saved time
@@ -826,28 +956,6 @@
             }, 3000);
         }
 
-        // Update IoT status display
-        async function updateIoTStatus() {
-            if (!iotIntegration) return;
-            
-            const status = await iotIntegration.getIoTStatus();
-            const statusText = `IoT Status: ${status.message}`;
-            
-            // Update footer with IoT status
-            const footer = document.querySelector('div[style*="background: rgba(255, 255, 255, 0.95)"]');
-            if (footer) {
-                const iotStatusSpan = footer.querySelector('#iotStatus') || document.createElement('span');
-                iotStatusSpan.id = 'iotStatus';
-                iotStatusSpan.textContent = statusText;
-                iotStatusSpan.style.color = status.status === 'online' ? '#22c55e' : 
-                                           status.status === 'stale' ? '#f59e0b' : '#dc2626';
-                
-                if (!footer.querySelector('#iotStatus')) {
-                    footer.innerHTML += ' | <span id="iotStatus">' + statusText + '</span>';
-                }
-            }
-        }
-
         // Manual IoT refresh button
         async function refreshIoTData() {
             if (!iotIntegration) return;
@@ -855,7 +963,7 @@
             showStatus('Refreshing IoT data...');
             equipmentData = await iotIntegration.updateEquipmentWithIoTData(equipmentData);
             renderTable();
-            updateIoTStatus();
+            updateStats();
             showStatus('IoT data refreshed');
         }
 
@@ -865,6 +973,6 @@
         // Auto-save on page unload
         window.addEventListener('beforeunload', autoSave);
     </script>
-<!-- Updated: 2025-08-18 22:42:41 -->
+<!-- Updated: 2025-08-18 22:47:07 -->
 </body>
 </html>
