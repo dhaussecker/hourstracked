@@ -316,15 +316,8 @@
     <div class="controls">
         <div>
             <button class="btn btn-primary" onclick="addNewEquipment()">Add Equipment</button>
-            <button class="btn btn-success" onclick="saveData()">Save Changes</button>
+            <button class="btn btn-success" onclick="saveData()">Save Data</button>
             <button class="btn btn-warning" onclick="exportToExcel()">Export Excel</button>
-        </div>
-        <div>
-            <button class="btn btn-primary" onclick="exportJSON()">Export Data</button>
-            <button class="btn btn-warning" onclick="importData()">Import Data</button>
-            <button class="btn btn-success" onclick="refreshIoTData()">Refresh IoT</button>
-            <button class="btn btn-danger" onclick="resetData()">Reset All</button>
-            <input type="file" id="importFile" style="display: none;" accept=".json,.csv" onchange="handleImport(event)">
         </div>
     </div>
 
@@ -356,36 +349,19 @@
         </div>
 
         <div class="refresh-info">
-            <p>Last saved: <span id="lastSaved">Never</span> | Auto-refresh every 30 seconds</p>
+            <p>Last saved: <span id="lastSaved">Never</span></p>
         </div>
     </div>
 
-    <script src="iot_integration.js"></script>
     <script>
         let equipmentData = [];
         const storageKey = 'equipmentTableData';
-        let iotIntegration = null;
 
         // Initialize the application
-        async function init() {
-            // Initialize IoT integration
-            iotIntegration = new IoTIntegration();
-            
+        function init() {
             loadData();
-            
-            // Update with IoT data
-            equipmentData = await iotIntegration.updateEquipmentWithIoTData(equipmentData);
-            
             renderTable();
             updateStats();
-            
-            // Start auto-update for IoT data
-            iotIntegration.startAutoUpdate(async () => {
-                equipmentData = await iotIntegration.updateEquipmentWithIoTData(equipmentData);
-                renderTable();
-                updateStats();
-                showStatus('IoT data updated');
-            });
         }
 
         // Load data from localStorage or use default
@@ -836,96 +812,6 @@
             showStatus('Excel file exported successfully');
         }
 
-        // Export JSON
-        function exportJSON() {
-            const exportData = {
-                equipment: equipmentData,
-                exported_at: new Date().toISOString(),
-                version: "1.0"
-            };
-            
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `equipment_data_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            
-            showStatus('JSON exported successfully');
-        }
-
-        // Import data
-        function importData() {
-            document.getElementById('importFile').click();
-        }
-
-        // Handle import
-        function handleImport(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    if (file.name.endsWith('.json')) {
-                        const imported = JSON.parse(e.target.result);
-                        if (Array.isArray(imported)) {
-                            equipmentData = imported;
-                        } else if (imported.equipment && Array.isArray(imported.equipment)) {
-                            equipmentData = imported.equipment;
-                        } else {
-                            throw new Error('Invalid JSON format');
-                        }
-                    } else if (file.name.endsWith('.csv')) {
-                        const lines = e.target.result.split('\n');
-                        const headers = lines[0].split(',');
-                        equipmentData = [];
-                        
-                        for (let i = 1; i < lines.length; i++) {
-                            if (lines[i].trim()) {
-                                const values = lines[i].split(',');
-                                const equipment = {
-                                    id: i,
-                                    vendor: values[0]?.replace(/"/g, '') || '',
-                                    location: values[1]?.replace(/"/g, '') || '',
-                                    locationCoords: values[2]?.replace(/"/g, '') || '',
-                                    currentHours: parseInt(values[3]) || 0,
-                                    nextServiceHours: parseInt(values[4]) || 100,
-                                    alertHours: parseInt(values[5]) || 90,
-                                    equipmentName: values[6]?.replace(/"/g, '') || '',
-                                    equipmentNumber: values[7]?.replace(/"/g, '') || '',
-                                    dateOnSite: values[8] || '',
-                                    dateOffSite: values[9] || '',
-                                    returnedHours: parseInt(values[10]) || 0,
-                                    lastServiceDate: values[11] || ''
-                                };
-                                equipmentData.push(equipment);
-                            }
-                        }
-                    }
-                    
-                    renderTable();
-                    updateStats();
-                    autoSave();
-                    showStatus('Data imported successfully');
-                } catch (error) {
-                    alert('Error importing file: ' + error.message);
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        // Reset data
-        function resetData() {
-            if (confirm('Reset all data to defaults? This will delete all your changes.')) {
-                localStorage.removeItem(storageKey);
-                loadDefaultData();
-                renderTable();
-                updateStats();
-                showStatus('Data reset to defaults');
-            }
-        }
 
         // Update statistics
         function updateStats() {
@@ -956,16 +842,6 @@
             }, 3000);
         }
 
-        // Manual IoT refresh button
-        async function refreshIoTData() {
-            if (!iotIntegration) return;
-            
-            showStatus('Refreshing IoT data...');
-            equipmentData = await iotIntegration.updateEquipmentWithIoTData(equipmentData);
-            renderTable();
-            updateStats();
-            showStatus('IoT data refreshed');
-        }
 
         // Initialize on page load
         window.onload = init;
@@ -973,6 +849,6 @@
         // Auto-save on page unload
         window.addEventListener('beforeunload', autoSave);
     </script>
-<!-- Updated: 2025-08-18 22:48:25 -->
+<!-- Updated: 2025-08-18 22:53:10 -->
 </body>
 </html>
